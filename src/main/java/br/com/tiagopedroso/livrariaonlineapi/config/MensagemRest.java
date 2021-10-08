@@ -1,9 +1,12 @@
 package br.com.tiagopedroso.livrariaonlineapi.config;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class MensagemRest {
 
@@ -14,10 +17,30 @@ public final class MensagemRest {
     private static final String CHAVE_RESPOSTA = "resposta";
 
     public static <T> ResponseEntity<?> ok(T objetoDeResposta) {
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry(CHAVE_STATUS, "OK"),
-                Map.entry(CHAVE_RESPOSTA, objetoDeResposta)
-        );
+        LinkedHashMap<String, Object> body = null;
+
+        if (objetoDeResposta instanceof Page) {
+            final var page = (Page) objetoDeResposta;
+            final var ordenacao = page.getSort().toList().stream()
+                    .map(order -> order.getDirection() + "," + order.getProperty())
+                    .collect(Collectors.toList());
+
+            body = new LinkedHashMap<>() {{
+                put(CHAVE_STATUS, "OK");
+                put(CHAVE_RESPOSTA, page.getContent());
+                put("pagina", page.getNumber());
+                put("quantidade", page.getSize());
+                put("totalElementos", page.getTotalElements());
+                put("totalPaginas", page.getTotalPages());
+                put("ordenacao", ordenacao);
+            }};
+        }
+        else {
+            body = new LinkedHashMap<>() {{
+                put(CHAVE_STATUS, "OK");
+                put(CHAVE_RESPOSTA, objetoDeResposta);
+            }};
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }

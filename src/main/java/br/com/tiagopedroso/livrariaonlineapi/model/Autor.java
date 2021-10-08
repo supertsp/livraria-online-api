@@ -5,9 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Data
@@ -29,7 +31,7 @@ public class Autor {
 	private String miniCurriculo;
 
 	//Relacionamentos
-	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
-	private List<Livro> livros;
+//	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+//	private List<Livro> livros;
 	
 }

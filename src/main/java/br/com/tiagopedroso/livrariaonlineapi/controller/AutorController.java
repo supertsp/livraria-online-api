@@ -4,7 +4,9 @@ import br.com.tiagopedroso.livrariaonlineapi.config.ApiUrl;
 import br.com.tiagopedroso.livrariaonlineapi.config.MensagemRest;
 import br.com.tiagopedroso.livrariaonlineapi.dto.AutorDto;
 import br.com.tiagopedroso.livrariaonlineapi.service.AutorService;
+import br.com.tiagopedroso.livrariaonlineapi.tool.SortHandler;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +20,16 @@ public class AutorController {
     private AutorService service;
 
     @GetMapping
-    public ResponseEntity<?> listar() {
-        final var listaAutor = service.listar();
+//    public ResponseEntity<?> listar(@PageableDefault(size = 2, sort = {"nome"}) Pageable pageable) {
+    public ResponseEntity<?> listar(
+            @RequestParam(required = false, defaultValue = "0") Integer pagina,
+            @RequestParam(required = false, defaultValue = "3") Integer quantidade,
+            @RequestParam(required = false, defaultValue = "nome,ASC") String[] ordenacao
+    ) {
+        final var sort = SortHandler.converterArrayStringParaSort(ordenacao);
+        final var listaAutor = service.listar(PageRequest.of(pagina, quantidade, sort));
 
-        if (listaAutor != null && listaAutor.size() >= 1) {
+        if (listaAutor != null && listaAutor.getSize() >= 1) {
             return MensagemRest.ok(listaAutor);
         }
 

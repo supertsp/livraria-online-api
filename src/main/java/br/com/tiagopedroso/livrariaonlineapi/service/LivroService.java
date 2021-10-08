@@ -6,6 +6,8 @@ import br.com.tiagopedroso.livrariaonlineapi.repository.LivroRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +34,7 @@ public class LivroService {
         }
     }
 
+    @Transactional
     public LivroDto cadastrar(LivroDto livroDto) {
         final var autorProcuradoDto = autorService.procurar(livroDto.getIdAutor());
 
@@ -47,6 +50,7 @@ public class LivroService {
         return null;
     }
 
+    @Transactional
     public LivroDto atualizar(Long idLivro, LivroDto bodyLivroDto) {
         if (idLivro != null && bodyLivroDto != null && bodyLivroDto.getIdAutor() != null) {
             final var livroProcurado = procurar(idLivro);

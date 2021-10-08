@@ -5,11 +5,9 @@ import br.com.tiagopedroso.livrariaonlineapi.model.Autor;
 import br.com.tiagopedroso.livrariaonlineapi.repository.AutorRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -18,11 +16,19 @@ public class AutorService {
     private final ModelMapper modelMapper = new ModelMapper();
     private AutorRepository repository;
 
-    public List<AutorDto> listar() {
-        return repository.findAll(Sort.by(Sort.DEFAULT_DIRECTION, "nome"))
-                .stream()
-                .map(autor -> modelMapper.map(autor, AutorDto.class))
-                .collect(Collectors.toList());
+    public Page<AutorDto> listar(Pageable pageable) {
+        try {
+            return repository.findAll(pageable)
+                    .map(autor -> modelMapper.map(autor, AutorDto.class));
+        } catch (Exception e) {
+            return null;
+        }
+
+//        //Exemplo com ordenação
+//        return repository.findAll(Sort.by(Sort.DEFAULT_DIRECTION, "nome"))
+//                .stream()
+//                .map(autor -> modelMapper.map(autor, AutorDto.class))
+//                .collect(Collectors.toList());
     }
 
     public AutorDto procurar(Long idAutor) {

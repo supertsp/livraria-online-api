@@ -6,13 +6,15 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      # JPA OPTIONS:
-      # none         = DB default
-      # update       = increment DB
-      # create       = reset/create DB every time
-      # create-drop  = reset/create and drops DB when SeessionFactory closes
-      ddl-auto: update
+      use-new-id-generator-mappings: false
+#      # JPA OPTIONS:
+#      # none         = ?
+#      # update       = increment DB
+#      # validate     = ?
+#      # create-drop  = reset/create and drops DB when SeessionFactory closes
+#      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+
