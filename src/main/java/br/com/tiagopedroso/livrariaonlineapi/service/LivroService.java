@@ -5,12 +5,10 @@ import br.com.tiagopedroso.livrariaonlineapi.model.Livro;
 import br.com.tiagopedroso.livrariaonlineapi.repository.LivroRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,10 +18,14 @@ public class LivroService {
     private LivroRepository repository;
     private AutorService autorService;
 
-    public List<LivroDto> listar() {
-        return repository.findAll().stream()
-                .map(livro -> modelMapper.map(livro, LivroDto.class))
-                .collect(Collectors.toList());
+    public Page<LivroDto> listar(Pageable pageable) {
+        try {
+            return repository.findAll(pageable)
+                    .map(livro -> modelMapper.map(livro, LivroDto.class));
+        } catch (Exception e) {
+            //Passou parametros Pageable inválidos?
+            return null;
+        }
     }
 
     public LivroDto procurar(Long idLivro) {

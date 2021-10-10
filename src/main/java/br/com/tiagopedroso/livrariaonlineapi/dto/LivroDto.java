@@ -33,13 +33,13 @@ public class LivroDto {
 
     private AutorDto autor;
 
+    @NotNull
+    @JsonSetter("idAutor")
+    public Long idAutor;
+
     @JsonGetter("autor")
     public String getNomeAutor() {
         return autor == null ? null : autor.getNome();
     }
-
-    @NotNull
-    @JsonSetter("idAutor")
-    public Long idAutor;
 
 }

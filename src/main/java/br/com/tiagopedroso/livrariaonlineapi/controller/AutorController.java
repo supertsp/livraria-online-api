@@ -23,13 +23,13 @@ public class AutorController {
 //    public ResponseEntity<?> listar(@PageableDefault(size = 2, sort = {"nome"}) Pageable pageable) {
     public ResponseEntity<?> listar(
             @RequestParam(required = false, defaultValue = "0") Integer pagina,
-            @RequestParam(required = false, defaultValue = "3") Integer quantidade,
+            @RequestParam(required = false, defaultValue = "50") Integer quantidade,
             @RequestParam(required = false, defaultValue = "nome,ASC") String[] ordenacao
     ) {
         final var sort = SortHandler.converterArrayStringParaSort(ordenacao);
         final var listaAutor = service.listar(PageRequest.of(pagina, quantidade, sort));
 
-        if (listaAutor != null && listaAutor.getSize() >= 1) {
+        if (listaAutor != null && listaAutor.getTotalElements() >= 1) {
             return MensagemRest.ok(listaAutor);
         }
 

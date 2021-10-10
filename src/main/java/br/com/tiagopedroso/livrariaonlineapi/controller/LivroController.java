@@ -5,7 +5,9 @@ import br.com.tiagopedroso.livrariaonlineapi.config.ApiUrl;
 import br.com.tiagopedroso.livrariaonlineapi.config.MensagemRest;
 import br.com.tiagopedroso.livrariaonlineapi.dto.LivroDto;
 import br.com.tiagopedroso.livrariaonlineapi.service.LivroService;
+import br.com.tiagopedroso.livrariaonlineapi.tool.SortHandler;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +21,15 @@ public class LivroController {
     private LivroService service;
 
     @GetMapping
-    public ResponseEntity<?> listar() {
-        final var listaLivro = service.listar();
+    public ResponseEntity<?> listar(
+            @RequestParam(required = false, defaultValue = "0") Integer pagina,
+            @RequestParam(required = false, defaultValue = "50") Integer quantidade,
+            @RequestParam(required = false, defaultValue = "titulo,ASC") String[] ordenacao
+    ) {
+        final var sort = SortHandler.converterArrayStringParaSort(ordenacao);
+        final var listaLivro = service.listar(PageRequest.of(pagina, quantidade, sort));
 
-        if (listaLivro != null && listaLivro.size() >= 1) {
+        if (listaLivro != null && listaLivro.getTotalElements() >= 1) {
             return MensagemRest.ok(listaLivro);
         }
 

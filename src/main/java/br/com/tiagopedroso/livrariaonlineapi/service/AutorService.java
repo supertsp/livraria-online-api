@@ -21,6 +21,7 @@ public class AutorService {
             return repository.findAll(pageable)
                     .map(autor -> modelMapper.map(autor, AutorDto.class));
         } catch (Exception e) {
+            //Passou parametros Pageable inválidos?
             return null;
         }
 
