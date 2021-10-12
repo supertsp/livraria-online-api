@@ -20,7 +20,7 @@ public class AutorController {
     private AutorService service;
 
     @GetMapping
-//    public ResponseEntity<?> listar(@PageableDefault(size = 2, sort = {"nome"}) Pageable pageable) {
+//    public ResponseEntity<?> listar(@PageableDefault(size = 2, sort = {"nome"}) Pageable pageable) {  //forma de chamar utilizando um Pageable
     public ResponseEntity<?> listar(
             @RequestParam(required = false, defaultValue = "0") Integer pagina,
             @RequestParam(required = false, defaultValue = "50") Integer quantidade,
@@ -52,7 +52,7 @@ public class AutorController {
         final var autorCriado = service.cadastrar(autorDto);
 
         if (autorCriado != null) {
-            return MensagemRest.conteudoCriado(autorCriado);
+            return MensagemRest.conteudoCriado(autorCriado.getId(), autorCriado);
         }
 
         return MensagemRest.naoFoiPossivelCriarNovoConteudo();

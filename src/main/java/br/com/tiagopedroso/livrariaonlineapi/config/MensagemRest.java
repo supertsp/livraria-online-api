@@ -1,10 +1,11 @@
 package br.com.tiagopedroso.livrariaonlineapi.config;
 
+import br.com.tiagopedroso.livrariaonlineapi.tool.OrderedMapHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public final class MensagemRest {
     private static final String CHAVE_RESPOSTA = "resposta";
 
     public static <T> ResponseEntity<?> ok(T objetoDeResposta) {
-        LinkedHashMap<String, Object> body = null;
+        final Map<String, Object> body;
 
         if (objetoDeResposta instanceof Page) {
             final var page = (Page) objetoDeResposta;
@@ -25,75 +26,82 @@ public final class MensagemRest {
                     .map(order -> order.getDirection() + "," + order.getProperty())
                     .collect(Collectors.toList());
 
-            body = new LinkedHashMap<>() {{
-                put(CHAVE_STATUS, "OK");
-                put(CHAVE_RESPOSTA, page.getContent());
-                put("pagina", page.getNumber());
-                put("quantidade", page.getSize());
-                put("totalElementos", page.getTotalElements());
-                put("totalPaginas", page.getTotalPages());
-                put("ordenacao", ordenacao);
-            }};
+            body = OrderedMapHandler.criar(
+                    CHAVE_STATUS, "OK",
+                CHAVE_RESPOSTA, page.getContent(),
+                "pagina", page.getNumber(),
+                "quantidade", page.getSize(),
+                "totalElementos", page.getTotalElements(),
+                "totalPaginas", page.getTotalPages(),
+                "ordenacao", ordenacao
+            );
         }
         else {
-            body = new LinkedHashMap<>() {{
-                put(CHAVE_STATUS, "OK");
-                put(CHAVE_RESPOSTA, objetoDeResposta);
-            }};
+            body = OrderedMapHandler.criar(
+                    CHAVE_STATUS, "OK",
+                    CHAVE_RESPOSTA, objetoDeResposta
+            );
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    public static <T> ResponseEntity<?> conteudoCriado(T objetoDeResposta) {
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry(CHAVE_STATUS, "OK"),
-                Map.entry(CHAVE_RESPOSTA, objetoDeResposta)
+    public static <T> ResponseEntity<?> conteudoCriado(Long novoId, T objetoDeResposta) {
+        final var body = OrderedMapHandler.criar(
+                CHAVE_STATUS, "OK",
+                CHAVE_RESPOSTA, objetoDeResposta
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(body);
+        var uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(novoId)
+                .toUri()
+        ;
+
+        return ResponseEntity.created(uri).body(body);
     }
 
     public static <T> ResponseEntity<?> conteudoAtualizado(T objetoDeResposta) {
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry(CHAVE_STATUS, "OK"),
-                Map.entry(CHAVE_RESPOSTA, objetoDeResposta)
+        final var body = OrderedMapHandler.criar(
+                CHAVE_STATUS, "OK",
+                CHAVE_RESPOSTA, objetoDeResposta
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     public static ResponseEntity<?> naoFoiPossivelEncontrarConteudo() {
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry(CHAVE_STATUS, "KO"),
-                Map.entry(CHAVE_MENSAGEM, "Não foi possível ENCONTRAR conteúdo :(")
+        final var body = OrderedMapHandler.criar(
+                CHAVE_STATUS, "KO",
+                CHAVE_MENSAGEM, "Não foi possível ENCONTRAR conteúdo :("
         );
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     public static ResponseEntity<?> naoFoiPossivelCriarNovoConteudo() {
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry(CHAVE_STATUS, "KO"),
-                Map.entry(CHAVE_MENSAGEM, "Não foi possível CRIAR um novo conteúdo :O")
+        final var body = OrderedMapHandler.criar(
+                CHAVE_STATUS, "KO",
+                CHAVE_MENSAGEM, "Não foi possível CRIAR um novo conteúdo :O"
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     public static ResponseEntity<?> naoFoiPossivelAtualizarConteudo() {
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry(CHAVE_STATUS, "KO"),
-                Map.entry(CHAVE_MENSAGEM, "Não foi possível ATUALIZAR conteúdo :P")
+        final var body = OrderedMapHandler.criar(
+                CHAVE_STATUS, "KO",
+                CHAVE_MENSAGEM, "Não foi possível ATUALIZAR conteúdo :P"
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     public static ResponseEntity<?> naoFoiPossivelExcluirConteudo() {
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry(CHAVE_STATUS, "KO"),
-                Map.entry(CHAVE_MENSAGEM, "Não foi possível EXCLUIR conteúdo :/")
+        final var body = OrderedMapHandler.criar(
+                CHAVE_STATUS, "KO",
+                CHAVE_MENSAGEM, "Não foi possível EXCLUIR conteúdo :/"
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);

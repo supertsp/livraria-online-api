@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -48,11 +49,11 @@ public class LivroController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody @Valid LivroDto livroDto) {
+    public ResponseEntity<?> cadastrar(@RequestBody @Valid LivroDto livroDto, UriComponentsBuilder uriComponentsBuilder) {
         final var livroCriado = service.cadastrar(livroDto);
 
         if (livroCriado != null) {
-            return MensagemRest.conteudoCriado(livroCriado);
+            return MensagemRest.conteudoCriado(livroCriado.getId(), livroCriado);
         }
 
         return MensagemRest.naoFoiPossivelCriarNovoConteudo();

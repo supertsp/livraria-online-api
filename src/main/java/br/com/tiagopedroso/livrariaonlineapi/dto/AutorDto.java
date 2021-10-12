@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Data
@@ -23,6 +24,7 @@ public class AutorDto {
     @NotEmpty
     private String nome;
 
+    @Pattern(regexp = "(\\w+)\\@(\\w+)\\.(com|gov|org|net|br)")
     private String email;
 
     private LocalDate dataNascimento;
