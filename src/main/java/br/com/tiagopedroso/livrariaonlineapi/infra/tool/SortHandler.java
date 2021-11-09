@@ -1,4 +1,4 @@
-package br.com.tiagopedroso.livrariaonlineapi.tool;
+package br.com.tiagopedroso.livrariaonlineapi.infra.tool;
 
 import org.springframework.data.domain.Sort;
 

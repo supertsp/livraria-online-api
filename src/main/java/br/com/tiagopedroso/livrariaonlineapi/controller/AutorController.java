@@ -1,10 +1,11 @@
 package br.com.tiagopedroso.livrariaonlineapi.controller;
 
-import br.com.tiagopedroso.livrariaonlineapi.config.ApiUrl;
-import br.com.tiagopedroso.livrariaonlineapi.config.MensagemRest;
+import br.com.tiagopedroso.livrariaonlineapi.infra.config.ApiUrl;
+import br.com.tiagopedroso.livrariaonlineapi.infra.config.MensagemRest;
+import br.com.tiagopedroso.livrariaonlineapi.dto.AtualizaAutorDto;
 import br.com.tiagopedroso.livrariaonlineapi.dto.AutorDto;
 import br.com.tiagopedroso.livrariaonlineapi.service.AutorService;
-import br.com.tiagopedroso.livrariaonlineapi.tool.SortHandler;
+import br.com.tiagopedroso.livrariaonlineapi.infra.tool.SortHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class AutorController {
 
     @GetMapping("/{idAutor}")
     public ResponseEntity<?> procurar(@PathVariable("idAutor") Long idAutor) {
-        final var autorProcrurado = service.procurar(idAutor);
+        final var autorProcrurado = service.detalhar(idAutor);
 
         if (autorProcrurado != null) {
             return MensagemRest.ok(autorProcrurado);
@@ -59,7 +60,7 @@ public class AutorController {
     }
 
     @PutMapping("/{idAutor}")
-    public ResponseEntity<?> atualizar(@PathVariable("idAutor") Long idAutor, @RequestBody AutorDto autorDto) {
+    public ResponseEntity<?> atualizar(@PathVariable("idAutor") Long idAutor, @RequestBody @Valid AtualizaAutorDto autorDto) {
         final var autorAtualizado =  service.atualizar(idAutor, autorDto);
 
         if (autorAtualizado != null) {

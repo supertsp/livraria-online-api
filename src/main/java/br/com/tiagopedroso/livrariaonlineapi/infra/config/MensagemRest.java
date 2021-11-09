@@ -1,6 +1,6 @@
-package br.com.tiagopedroso.livrariaonlineapi.config;
+package br.com.tiagopedroso.livrariaonlineapi.infra.config;
 
-import br.com.tiagopedroso.livrariaonlineapi.tool.OrderedMapHandler;
+import br.com.tiagopedroso.livrariaonlineapi.infra.tool.OrderedMapHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +77,7 @@ public final class MensagemRest {
                 CHAVE_MENSAGEM, "Não foi possível ENCONTRAR conteúdo :("
         );
 
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
     public static ResponseEntity<?> naoFoiPossivelCriarNovoConteudo() {

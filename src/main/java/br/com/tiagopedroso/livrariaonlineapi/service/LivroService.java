@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 @AllArgsConstructor
 public class LivroService {
@@ -28,9 +30,9 @@ public class LivroService {
         }
     }
 
-    public LivroDto procurar(Long idLivro) {
+    public LivroDto detalhar(Long idLivro) {
         try {
-            return modelMapper.map(repository.findById(idLivro).orElse(null), LivroDto.class);
+            return modelMapper.map(repository.findById(idLivro).orElseThrow(() -> new EntityNotFoundException()), LivroDto.class);
         } catch (Exception e) {
             return null;
         }
@@ -38,7 +40,7 @@ public class LivroService {
 
     @Transactional
     public LivroDto cadastrar(LivroDto livroDto) {
-        final var autorProcuradoDto = autorService.procurar(livroDto.getIdAutor());
+        final var autorProcuradoDto = autorService.detalhar(livroDto.getIdAutor());
 
         if (autorProcuradoDto != null) {
             livroDto.setAutor(autorProcuradoDto);
@@ -55,8 +57,8 @@ public class LivroService {
     @Transactional
     public LivroDto atualizar(Long idLivro, LivroDto bodyLivroDto) {
         if (idLivro != null && bodyLivroDto != null && bodyLivroDto.getIdAutor() != null) {
-            final var livroProcurado = procurar(idLivro);
-            final var autorProcuradoDto = autorService.procurar(bodyLivroDto.getIdAutor());
+            final var livroProcurado = detalhar(idLivro);
+            final var autorProcuradoDto = autorService.detalhar(bodyLivroDto.getIdAutor());
 
             if (livroProcurado != null && autorProcuradoDto != null) {
                 final var novoTitulo = bodyLivroDto.getTitulo() == null ?

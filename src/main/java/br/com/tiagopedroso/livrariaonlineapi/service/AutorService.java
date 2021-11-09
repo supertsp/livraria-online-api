@@ -1,5 +1,6 @@
 package br.com.tiagopedroso.livrariaonlineapi.service;
 
+import br.com.tiagopedroso.livrariaonlineapi.dto.AtualizaAutorDto;
 import br.com.tiagopedroso.livrariaonlineapi.dto.AutorDto;
 import br.com.tiagopedroso.livrariaonlineapi.model.Autor;
 import br.com.tiagopedroso.livrariaonlineapi.repository.AutorRepository;
@@ -8,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -32,7 +34,7 @@ public class AutorService {
 //                .collect(Collectors.toList());
     }
 
-    public AutorDto procurar(Long idAutor) {
+    public AutorDto detalhar(Long idAutor) {
         try {
             return modelMapper.map(repository.findById(idAutor).orElse(null), AutorDto.class);
         } catch (Exception e) {
@@ -40,28 +42,30 @@ public class AutorService {
         }
     }
 
-    public AutorDto cadastrar(AutorDto novoAutorDto) {
-        final var novoAutor = modelMapper.map(novoAutorDto, Autor.class);
+    @Transactional
+    public AutorDto cadastrar(AutorDto dto) {
+        final var novoAutor = modelMapper.map(dto, Autor.class);
         final var autorSalvo = repository.save(novoAutor);
         return modelMapper.map(autorSalvo, AutorDto.class);
     }
 
-    public AutorDto atualizar(Long idAutor, AutorDto bodyAutorDto) {
-        if (idAutor != null && bodyAutorDto != null) {
-            final var autorProcurado = procurar(idAutor);
+    @Transactional
+    public AutorDto atualizar(Long idAutor, AtualizaAutorDto dto) {
+        if (idAutor != null && dto != null) {
+            final var autorProcurado = detalhar(idAutor);
 
             if (autorProcurado != null) {
-                final var novoNome = bodyAutorDto.getNome() == null ?
-                        autorProcurado.getNome() : bodyAutorDto.getNome();
+                final var novoNome = dto.getNome() == null ?
+                        autorProcurado.getNome() : dto.getNome();
 
-                final var novoEmail = bodyAutorDto.getEmail() == null ?
-                        autorProcurado.getEmail() : bodyAutorDto.getEmail();
+                final var novoEmail = dto.getEmail() == null ?
+                        autorProcurado.getEmail() : dto.getEmail();
 
-                final var novaDataNascimento = bodyAutorDto.getDataNascimento() == null ?
-                        autorProcurado.getDataNascimento() : bodyAutorDto.getDataNascimento();
+                final var novaDataNascimento = dto.getDataNascimento() == null ?
+                        autorProcurado.getDataNascimento() : dto.getDataNascimento();
 
-                final var novoMiniCurriculo = bodyAutorDto.getMiniCurriculo() == null ?
-                        autorProcurado.getMiniCurriculo() : bodyAutorDto.getMiniCurriculo();
+                final var novoMiniCurriculo = dto.getMiniCurriculo() == null ?
+                        autorProcurado.getMiniCurriculo() : dto.getMiniCurriculo();
 
                 autorProcurado.setNome(novoNome);
                 autorProcurado.setEmail(novoEmail);

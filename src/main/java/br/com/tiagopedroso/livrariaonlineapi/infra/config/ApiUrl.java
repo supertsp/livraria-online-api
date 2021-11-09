@@ -1,4 +1,4 @@
-package br.com.tiagopedroso.livrariaonlineapi.config;
+package br.com.tiagopedroso.livrariaonlineapi.infra.config;
 
 public final class ApiUrl {
 
