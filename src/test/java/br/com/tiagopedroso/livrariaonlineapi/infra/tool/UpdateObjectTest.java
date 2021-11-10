@@ -1,6 +1,8 @@
 package br.com.tiagopedroso.livrariaonlineapi.infra.tool;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.junit.jupiter.api.Test;
 
@@ -9,8 +11,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 class UpdateObjectTest {
 
@@ -20,7 +21,7 @@ class UpdateObjectTest {
     */
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_preenchido__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSuper model = new ObjetoModelSuper();
         ObjetoDtoSuper dto = new ObjetoDtoSuper();
@@ -39,19 +40,18 @@ class UpdateObjectTest {
         dto.setSalario(20_200.22);
         dto.setGerente(true);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -60,7 +60,7 @@ class UpdateObjectTest {
     }
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_em_branco__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_em_branco__Entao_retornar_dto() {
         //Dado
         ObjetoModelSuper model = new ObjetoModelSuper();
         ObjetoDtoSuper dto = new ObjetoDtoSuper();
@@ -72,19 +72,18 @@ class UpdateObjectTest {
         model.setSalario(10_000.15);
         model.setGerente(false);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_em_branco__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_em_branco__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -93,7 +92,7 @@ class UpdateObjectTest {
     }
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_objetoB_SUPER_preenchido__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_objetoB_SUPER_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSuper model = new ObjetoModelSuper();
         ObjetoDtoSuper dto = new ObjetoDtoSuper();
@@ -112,19 +111,18 @@ class UpdateObjectTest {
         dto.setSalario(20_200.22);
         dto.setGerente(true);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_objetoB_SUPER_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_objetoB_SUPER_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -139,7 +137,7 @@ class UpdateObjectTest {
     */
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSuper model = new ObjetoModelSuper();
         ObjetoDtoSub dto = new ObjetoDtoSub();
@@ -161,19 +159,18 @@ class UpdateObjectTest {
         dto.setUltimaModificacao(LocalDateTime.now());
         dto.setAdmin(false);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -182,7 +179,7 @@ class UpdateObjectTest {
     }
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUB_em_branco__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUB_em_branco__Entao_retornar_dto() {
         //Dado
         ObjetoModelSuper model = new ObjetoModelSuper();
         ObjetoDtoSub dto = new ObjetoDtoSub();
@@ -194,19 +191,18 @@ class UpdateObjectTest {
         model.setSalario(10_000.15);
         model.setGerente(false);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUB_em_branco__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUB_em_branco__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -215,7 +211,7 @@ class UpdateObjectTest {
     }
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_objetoB_SUB_preenchido__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_objetoB_SUB_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSuper model = new ObjetoModelSuper();
         ObjetoDtoSub dto = new ObjetoDtoSub();
@@ -237,19 +233,18 @@ class UpdateObjectTest {
         dto.setUltimaModificacao(LocalDateTime.now());
         dto.setAdmin(false);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_objetoB_SUB_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_objetoB_SUB_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -264,7 +259,7 @@ class UpdateObjectTest {
     */
 
     @Test
-    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUPER_preenchido__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUPER_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSub model = new ObjetoModelSub();
         ObjetoDtoSuper dto = new ObjetoDtoSuper();
@@ -286,19 +281,18 @@ class UpdateObjectTest {
         dto.setSalario(20_200.22);
         dto.setGerente(true);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUPER_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUPER_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -307,7 +301,7 @@ class UpdateObjectTest {
     }
 
     @Test
-    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUPER_em_branco__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUPER_em_branco__Entao_retornar_dto() {
         //Dado
         ObjetoModelSub model = new ObjetoModelSub();
         ObjetoDtoSuper dto = new ObjetoDtoSuper();
@@ -322,19 +316,18 @@ class UpdateObjectTest {
         model.setAdmin(true);
         model.setHabilitado(true);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUPER_em_branco__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUPER_em_branco__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -343,7 +336,7 @@ class UpdateObjectTest {
     }
 
     @Test
-    public void mappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_objetoB_SUPER_preenchido__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_objetoB_SUPER_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSub model = new ObjetoModelSub();
         ObjetoDtoSuper dto = new ObjetoDtoSuper();
@@ -365,19 +358,18 @@ class UpdateObjectTest {
         dto.setSalario(20_200.22);
         dto.setGerente(true);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_objetoB_SUPER_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_objetoB_SUPER_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -392,7 +384,7 @@ class UpdateObjectTest {
     */
 
     @Test
-    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSub model = new ObjetoModelSub();
         ObjetoDtoSub dto = new ObjetoDtoSub();
@@ -417,19 +409,18 @@ class UpdateObjectTest {
         dto.setUltimaModificacao(LocalDateTime.now());
         dto.setAdmin(false);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -440,7 +431,7 @@ class UpdateObjectTest {
     }
 
     @Test
-    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_em_branco__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_em_branco__Entao_retornar_dto() {
         //Dado
         ObjetoModelSub model = new ObjetoModelSub();
         ObjetoDtoSub dto = new ObjetoDtoSub();
@@ -455,19 +446,18 @@ class UpdateObjectTest {
         model.setAdmin(true);
         model.setHabilitado(true);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_em_branco__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_em_branco__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -478,7 +468,7 @@ class UpdateObjectTest {
     }
 
     @Test
-    public void mappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_objetoB_SUB_preenchido__Entao_retornar_true() {
+    public void mappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_objetoB_SUB_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSub model = new ObjetoModelSub();
         ObjetoDtoSub dto = new ObjetoDtoSub();
@@ -503,19 +493,104 @@ class UpdateObjectTest {
         dto.setUltimaModificacao(LocalDateTime.now());
         dto.setAdmin(false);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_objetoB_SUB_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_objetoB_SUB_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingValues(model, dto);
+        UpdateObject.mappingValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getDataHoraCriacao(), is(dto.getDataHoraCriacao()));
+        assertThat(model.isAdmin(), is(dto.isAdmin()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+
+    /*----------------------------+
+    |  mappingValues( SUB, NEW )  |
+    +-----------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_instanciado__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = new ObjetoDtoSub();
+
+        model.setId(10L);
+        model.setNome("Ana");
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+        model.setDataHoraCriacao(LocalDateTime.now());
+        model.setAdmin(true);
+        model.setHabilitado(true);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_instanciado__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        UpdateObject.mappingValues(model, dto);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getDataHoraCriacao(), is(dto.getDataHoraCriacao()));
+        assertThat(model.isAdmin(), is(dto.isAdmin()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+
+    /*----------------------------+
+    |  mappingValues( NEW, SUB )  |
+    +-----------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUB_instanciado_e_objetoB_SUB_preenchido__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = new ObjetoDtoSub();
+
+        dto.setId(20L);
+        dto.setNome("Beatriz");
+        dto.setSobrenome("Brunette");
+        dto.setNascimento(LocalDate.parse("2020-02-02"));
+        dto.setSalario(20_200.22);
+        dto.setGerente(true);
+        dto.setDataHoraCriacao(LocalDateTime.parse("2020-02-02T02:00:00"));
+        dto.setUltimaModificacao(LocalDateTime.now());
+        dto.setAdmin(false);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUB_instanciado_e_objetoB_SUB_preenchido__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        UpdateObject.mappingValues(model, dto);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(dto.getNascimento()));
@@ -532,7 +607,7 @@ class UpdateObjectTest {
     */
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_null__Entao_retornar_false() {
+    public void mappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_null__Entao_retornar_null() {
         //Dado
         ObjetoModelSuper model = new ObjetoModelSuper();
         ObjetoDtoSuper dto = null;
@@ -544,7 +619,7 @@ class UpdateObjectTest {
         model.setSalario(10_000.15);
         model.setGerente(false);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_null__Entao_retornar_false");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_objetoB_SUPER_null__Entao_retornar_null");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
@@ -556,7 +631,7 @@ class UpdateObjectTest {
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(false));
+        assertThat(mappingSuccess, is(nullValue()));
     }
 
 
@@ -566,7 +641,7 @@ class UpdateObjectTest {
     */
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_null_e_objetoB_SUPER_preenchido__Entao_retornar_false() {
+    public void mappingValues__Com_objetoA_SUPER_null_e_objetoB_SUPER_preenchido__Entao_retornar_null() {
         //Dado
         ObjetoModelSuper model = null;
         ObjetoDtoSuper dto = new ObjetoDtoSuper();
@@ -578,7 +653,7 @@ class UpdateObjectTest {
         dto.setSalario(20_200.22);
         dto.setGerente(true);
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_null_e_objetoB_SUPER_preenchido__Entao_retornar_false");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_null_e_objetoB_SUPER_preenchido__Entao_retornar_null");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
@@ -590,7 +665,7 @@ class UpdateObjectTest {
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(false));
+        assertThat(mappingSuccess, is(nullValue()));
     }
 
 
@@ -600,12 +675,12 @@ class UpdateObjectTest {
     */
 
     @Test
-    public void mappingValues__Com_objetoA_SUPER_null_e_objetoB_SUPER_null__Entao_retornar_false() {
+    public void mappingValues__Com_objetoA_SUPER_null_e_objetoB_SUPER_null__Entao_retornar_null() {
         //Dado
         ObjetoModelSuper model = null;
         ObjetoDtoSuper dto = null;
 
-        System.out.println("\nmappingValues__Com_objetoA_SUPER_null_e_objetoB_SUPER_null__Entao_retornar_false");
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_null_e_objetoB_SUPER_null__Entao_retornar_null");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
@@ -617,7 +692,401 @@ class UpdateObjectTest {
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(false));
+        assertThat(mappingSuccess, is(nullValue()));
+    }
+
+
+/* ---------------------------------------------------------------------------------------------------------------------*/
+
+
+    /*-------------------------------------+
+    |  mappingValues( SUPER, TYPE_SUPER )  |
+    +--------------------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUPER_preenchido_e_tipo_SUPER__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSuper model = new ObjetoModelSuper();
+        ObjetoDtoSuper dto = null;
+
+        model.setId(10L);
+        model.setNome("Ana");
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_tipo_SUPER__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSuper.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+    @Test
+    public void mappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_tipo_SUPER__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSuper model = new ObjetoModelSuper();
+        ObjetoDtoSuper dto = null;
+
+//        model.setId(null);
+//        model.setNome(null);
+//        model.setNascimento(null);
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_com_alguns_null_e_tipo_SUPER__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSuper.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+
+    /*-----------------------------------+
+    |  mappingValues( SUPER, TYPE_SUB )  |
+    +------------------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUPER_preenchido_e_tipo_SUB__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSuper model = new ObjetoModelSuper();
+        ObjetoDtoSub dto = null;
+
+        model.setId(10L);
+        model.setNome("Ana");
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_tipo_SUB__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSub.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+    @Test
+    public void mappingValues__Com_objetoA_SUPER_parcialmente_preenchido_e_tipo_SUB__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSuper model = new ObjetoModelSuper();
+        ObjetoDtoSuper dto = null;
+
+//        model.setId(null);
+//        model.setNome(null);
+//        model.setNascimento(null);
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_parcialmente_preenchido_e_tipo_SUB__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSuper.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+
+    /*-----------------------------------+
+    |  mappingValues( SUB, TYPE_SUPER )  |
+    +------------------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUB_preenchido_e_tipo_SUPER__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSuper dto = null;
+
+        model.setId(10L);
+        model.setNome("Ana");
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+        model.setDataHoraCriacao(LocalDateTime.now());
+        model.setAdmin(true);
+        model.setHabilitado(true);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_tipo_SUPER__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSuper.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+
+    @Test
+    public void mappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_tipo_SUPER__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSuper dto = null;
+
+        model.setId(10L);
+//        model.setNome(null);
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+//        model.setSalario(0);
+//        model.setGerente(null);
+//        model.setDataHoraCriacao(null);
+        model.setAdmin(true);
+//        model.setHabilitado(null);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_com_alguns_null_e_tipo_SUPER__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSuper.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+
+    /*---------------------------------+
+    |  mappingValues( SUB, TYPE_SUB )  |
+    +----------------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUB_preenchido_e_tipo_SUB__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = null;
+
+        model.setId(10L);
+        model.setNome("Ana");
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+        model.setDataHoraCriacao(LocalDateTime.now());
+        model.setAdmin(true);
+        model.setHabilitado(true);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUB_preenchido_e_tipo_SUB__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSub.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getDataHoraCriacao(), is(dto.getDataHoraCriacao()));
+        assertThat(model.isAdmin(), is(dto.isAdmin()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+    @Test
+    public void mappingValues__Com_objetoA_SUB_parcialmente_preenchido_e_tipo_SUB__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = null;
+
+        model.setId(10L);
+//        model.setNome(null);
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+//        model.setSalario(0);
+//        model.setGerente(null);
+//        model.setDataHoraCriacao(null);
+        model.setAdmin(true);
+//        model.setHabilitado(null);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_parcialmente_preenchido_e_tipo_SUB__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSub.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getDataHoraCriacao(), is(dto.getDataHoraCriacao()));
+        assertThat(model.isAdmin(), is(dto.isAdmin()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+
+    /*---------------------------------+
+    |  mappingValues( NEW, TYPE_SUB )  |
+    +----------------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUB_instanciado_e_tipo_SUB__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = null;
+
+        System.out.println("\nmappingValues__Com_objetoA_SUB_instanciado_e_tipo_SUB__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, ObjetoDtoSub.class);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(dto.getSalario()));
+        assertThat(model.getDataHoraCriacao(), is(dto.getDataHoraCriacao()));
+        assertThat(model.isAdmin(), is(dto.isAdmin()));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+    }
+
+
+    /*-------------------------------+
+    |  mappingValues( SUPER, NULL )  |
+    +--------------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUPER_preenchido_e_tipo_null__Entao_retornar_null() {
+        //Dado
+        ObjetoModelSuper model = new ObjetoModelSuper();
+        ObjetoDtoSuper dto = null;
+
+        model.setId(10L);
+        model.setNome("Ana");
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_preenchido_e_tipo_null__Entao_retornar_null");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, null);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(dto, is(nullValue()));
+    }
+
+
+    /*------------------------------+
+    |  mappingValues( NULL, NULL )  |
+    +-------------------------------+
+    */
+
+    @Test
+    public void mappingValues__Com_objetoA_SUPER_null_e_tipo_null__Entao_retornar_null() {
+        //Dado
+        ObjetoModelSuper model = null;
+        ObjetoDtoSuper dto = null;
+
+        System.out.println("\nmappingValues__Com_objetoA_SUPER_null_e_tipo_null__Entao_retornar_null");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingValues(model, null);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(dto, is(nullValue()));
     }
 
 
@@ -630,7 +1099,7 @@ class UpdateObjectTest {
     */
 
     @Test
-    public void mappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_true() {
+    public void mappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSub model = new ObjetoModelSub();
         ObjetoDtoSub dto = new ObjetoDtoSub();
@@ -655,19 +1124,18 @@ class UpdateObjectTest {
         dto.setUltimaModificacao(LocalDateTime.now());
         dto.setAdmin(false);
 
-        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_true");
+        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingOnlyNullValues(model, dto);
+        UpdateObject.mappingOnlyNullValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(not(dto.getId())));
         assertThat(model.getNome(), is(not(dto.getNome())));
         assertThat(model.getNascimento(), is(not(dto.getNascimento())));
@@ -677,8 +1145,14 @@ class UpdateObjectTest {
         assertThat(model.isAdmin(), is(not(dto.isAdmin())));
     }
 
+
+    /*-------------------------------------+
+    |  mappingOnlyNullValues( SUB, SUB- )  |
+    +--------------------------------------+
+    */
+
     @Test
-    public void mappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchidocom_alguns_null__Entao_retornar_true() {
+    public void mappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_parcialmente_preenchido__Entao_retornar_dto() {
         //Dado
         ObjetoModelSub model = new ObjetoModelSub();
         ObjetoDtoSub dto = new ObjetoDtoSub();
@@ -703,19 +1177,18 @@ class UpdateObjectTest {
         dto.setUltimaModificacao(LocalDateTime.now());
         dto.setAdmin(false);
 
-        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_preenchidocom_alguns_null__Entao_retornar_true");
+        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_parcialmente_preenchido__Entao_retornar_dto");
         System.out.println("\n     --------- Antes --------- ");
         printObjectsSideBySide(model, dto);
 
         //Quando
-        var mappingSuccess = UpdateObject.mappingOnlyNullValues(model, dto);
+        UpdateObject.mappingOnlyNullValues(model, dto);
 
         System.out.println("     --------- Depois -------- ");
         printObjectsSideBySide(model, dto);
         System.out.println("\n");
 
         //Então
-        assertThat(mappingSuccess, is(true));
         assertThat(model.getId(), is(dto.getId()));
         assertThat(model.getNome(), is(dto.getNome()));
         assertThat(model.getNascimento(), is(not(dto.getNascimento())));
@@ -726,14 +1199,242 @@ class UpdateObjectTest {
     }
 
 
+    /*------------------------------------+
+    |  mappingOnlyNullValues( SUB, NEW )  |
+    +-------------------------------------+
+    */
+
+    @Test
+    public void mappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_instanciado__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = new ObjetoDtoSub();
+
+        model.setId(10L);
+        model.setNome("Ana");
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+        model.setDataHoraCriacao(LocalDateTime.now());
+        model.setAdmin(true);
+        model.setHabilitado(true);
+
+        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_instanciado__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        UpdateObject.mappingOnlyNullValues(model, dto);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(dto.getNascimento()));
+        assertThat(model.getSalario(), is(not(dto.getSalario())));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+        assertThat(model.getDataHoraCriacao(), is(dto.getDataHoraCriacao()));
+        assertThat(model.isAdmin(), is(not(dto.isAdmin())));
+    }
+
+
+    /*------------------------------------+
+    |  mappingOnlyNullValues( NEW, SUB )  |
+    +-------------------------------------+
+    */
+
+    @Test
+    public void mappingOnlyNullValues__Com_objetoA_SUB_instanciado_e_objetoB_SUB_preenchido__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = new ObjetoDtoSub();
+
+        dto.setId(20L);
+        dto.setNome("Beatriz");
+        dto.setSobrenome("Brunette");
+        dto.setNascimento(LocalDate.parse("2020-02-02"));
+        dto.setSalario(20_200.22);
+        dto.setGerente(true);
+        dto.setDataHoraCriacao(LocalDateTime.parse("2020-02-02T02:00:00"));
+        dto.setUltimaModificacao(LocalDateTime.now());
+        dto.setAdmin(false);
+
+        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_instanciado_e_objetoB_SUB_preenchido__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        UpdateObject.mappingOnlyNullValues(model, dto);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(not(dto.getId())));
+        assertThat(model.getNome(), is(not(dto.getNome())));
+        assertThat(model.getNascimento(), is(not(dto.getNascimento())));
+        assertThat(model.getSalario(), is(not(dto.getSalario())));
+        assertThat(model.getGerente(), is(not(dto.getGerente())));
+        assertThat(model.getDataHoraCriacao(), is(not(dto.getDataHoraCriacao())));
+    }
+
+
+    /*------------------------------------+
+    |  mappingOnlyNullValues( NEW, SUB- )  |
+    +-------------------------------------+
+    */
+
+    @Test
+    public void mappingOnlyNullValues__Com_objetoA_SUB_instanciado_e_objetoB_SUB_parcialmente_preenchido__Entao_retornar_dto() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = new ObjetoDtoSub();
+
+//        dto.setId(null);
+//        dto.setNome(null);
+        dto.setSobrenome("Brunette");
+        dto.setNascimento(LocalDate.parse("2020-02-02"));
+        dto.setSalario(20_200.22);
+//        dto.setGerente(null);
+//        dto.setDataHoraCriacao(null);
+        dto.setUltimaModificacao(LocalDateTime.now());
+        dto.setAdmin(false);
+
+        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_instanciado_e_objetoB_SUB_parcialmente_preenchido__Entao_retornar_dto");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        UpdateObject.mappingOnlyNullValues(model, dto);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(model.getId(), is(dto.getId()));
+        assertThat(model.getNome(), is(dto.getNome()));
+        assertThat(model.getNascimento(), is(not(dto.getNascimento())));
+        assertThat(model.getSalario(), is(not(dto.getSalario())));
+        assertThat(model.getGerente(), is(dto.getGerente()));
+        assertThat(model.getDataHoraCriacao(), is(dto.getDataHoraCriacao()));
+        assertThat(model.isAdmin(), is(dto.isAdmin()));
+    }
+
+
+    /*-------------------------------------+
+    |  mappingOnlyNullValues( SUB, NULL )  |
+    +--------------------------------------+
+    */
+
+    @Test
+    public void mappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_null__Entao_retornar_null() {
+        //Dado
+        ObjetoModelSub model = new ObjetoModelSub();
+        ObjetoDtoSub dto = null;
+
+        model.setId(10L);
+        model.setNome("Ana");
+        model.setNascimento("2000-01-01");
+        model.setEndereco("Rua Alpha 123");
+        model.setSalario(10_000.15);
+        model.setGerente(false);
+        model.setDataHoraCriacao(LocalDateTime.now());
+        model.setAdmin(true);
+        model.setHabilitado(true);
+
+        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_preenchido_e_objetoB_SUB_null__Entao_retornar_null");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        UpdateObject.mappingOnlyNullValues(model, dto);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(dto, is(nullValue()));
+    }
+
+
+    /*-------------------------------------+
+    |  mappingOnlyNullValues( NULL, SUB )  |
+    +--------------------------------------+
+    */
+
+    @Test
+    public void mappingOnlyNullValues__Com_objetoA_SUB_null_e_objetoB_SUB_preenchido__Entao_retornar_null() {
+        //Dado
+        ObjetoModelSub model = null;
+        ObjetoDtoSub dto = new ObjetoDtoSub();
+
+        dto.setId(20L);
+        dto.setNome("Beatriz");
+        dto.setSobrenome("Brunette");
+        dto.setNascimento(LocalDate.parse("2020-02-02"));
+        dto.setSalario(20_200.22);
+        dto.setGerente(true);
+        dto.setDataHoraCriacao(LocalDateTime.parse("2020-02-02T02:00:00"));
+        dto.setUltimaModificacao(LocalDateTime.now());
+        dto.setAdmin(false);
+
+        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_null_e_objetoB_SUB_preenchido__Entao_retornar_null");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        dto = UpdateObject.mappingOnlyNullValues(model, dto);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(dto, is(nullValue()));
+    }
+
+
+    /*--------------------------------------+
+    |  mappingOnlyNullValues( NULL, NULL )  |
+    +---------------------------------------+
+    */
+
+    @Test
+    public void mappingOnlyNullValues__Com_objetoA_SUB_null_e_objetoB_SUB_null__Entao_retornar_null() {
+        //Dado
+        ObjetoModelSub model = null;
+        ObjetoDtoSub dto = null;
+
+        System.out.println("\nmappingOnlyNullValues__Com_objetoA_SUB_null_e_objetoB_SUB_null__Entao_retornar_null");
+        System.out.println("\n     --------- Antes --------- ");
+        printObjectsSideBySide(model, dto);
+
+        //Quando
+        UpdateObject.mappingOnlyNullValues(model, dto);
+
+        System.out.println("     --------- Depois -------- ");
+        printObjectsSideBySide(model, dto);
+        System.out.println("\n");
+
+        //Então
+        assertThat(dto, is(nullValue()));
+    }
 
 
 
+/* ---------------------------------------------------------------------------------------------------------------------*/
 
 
-    /*
-    PRINT AUX
-     */
+    /*##########################
+            PRINT AUX
+    ##########################*/
     private void printObjectsSideBySide(Object objectA, Object objectB) {
         String[] sideA = null;
         String[] sideB = null;
@@ -847,6 +1548,12 @@ class UpdateObjectTest {
     DC ?
  */
 
+
+
+    /*##########################
+            TEST CLASSESS
+    ##########################*/
+
 @Getter
 @Setter
 class ObjetoModelSuper {
@@ -893,7 +1600,11 @@ class ObjetoModelSub extends ObjetoModelSuper {
     private Boolean habilitado;
 
     public String getBairro() {
-        return super.getEndereco().substring(super.getEndereco().length() - 5, super.getEndereco().length());
+        if (getEndereco() != null) {
+            return super.getEndereco().substring(super.getEndereco().length() - 5, super.getEndereco().length());
+        }
+
+        return null;
     }
 
     public void setBairro(String bairroParaAdicionar) {
@@ -908,6 +1619,7 @@ class ObjetoModelSub extends ObjetoModelSuper {
                 "\n dataHoraCriacao: " + dataHoraCriacao +
                 "\n admin: " + admin +
                 "\n habilitado: " + habilitado +
+                "\n getBairro(): " + getBairro() +
                 "\n}";
     }
 
@@ -915,6 +1627,8 @@ class ObjetoModelSub extends ObjetoModelSuper {
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 class ObjetoDtoSuper {
 
     private Long id;
@@ -923,6 +1637,10 @@ class ObjetoDtoSuper {
     private LocalDate nascimento;
     private double salario;
     private Boolean gerente;
+
+    public ObjetoDtoSuper(Boolean gerente) {
+        this.gerente = gerente;
+    }
 
     public int getTamanhoNomeCompleto() {
         if (nome != null && sobrenome != null)
@@ -952,8 +1670,8 @@ class ObjetoDtoSuper {
                 "\n nome: " + nome +
                 "\n sobrenome: " + sobrenome +
                 "\n nascimento: " + nascimento +
-                "\n tamanhoNomeCompleto: " + getTamanhoNomeCompleto() +
-                "\n idade: " + getIdade() +
+                "\n getTamanhoNomeCompleto(): " + getTamanhoNomeCompleto() +
+                "\n getIdade(): " + getIdade() +
                 "\n salario: " + salario +
                 "\n gerente: " + gerente
                 ;
