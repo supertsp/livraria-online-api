@@ -10,8 +10,7 @@ import java.util.*;
 @Slf4j
 public class UpdateObject {
 
-    private UpdateObject() {
-    }
+    private UpdateObject() {}
 
     public static <A, B> B mappingValues(A mainObject, B mirrorObject) {
         if (mainObject == null || mirrorObject == null) return null;

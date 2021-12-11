@@ -3,44 +3,38 @@ package br.com.tiagopedroso.livrariaonlineapi.dto;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import lombok.*;
-import org.springframework.hateoas.RepresentationModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LivroDto extends RepresentationModel<LivroDto> {
+public class LivroAtualizarDto {
 
-    private Long id;
-
-    @NotNull
-    @NotEmpty
     @Size(min = 10)
     private String titulo;
 
-    @NotNull
     @PastOrPresent
     private LocalDate dataLancamento;
 
-    @NotNull
     @Min(100)
     private Integer quantidadePaginas;
 
     @JsonIgnore
     private AutorDto autor;
 
-    @NotNull
-    @JsonSetter("idAutor")
-    private Long idAutor;
+    public Long idAutor;
 
-    @JsonGetter("nomeAutor")
+    @JsonGetter("autor")
     public String getNomeAutor() {
         return autor == null ? null : autor.getNome();
     }

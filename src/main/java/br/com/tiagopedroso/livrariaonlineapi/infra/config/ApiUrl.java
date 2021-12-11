@@ -6,7 +6,8 @@ public final class ApiUrl {
 
     public static final String
             API_URI = "/livraria-online",
-            BASE_URI = "/api/v1" + API_URI
+            API_VERSION = "v1",
+            BASE_URI = "/api/" + API_VERSION + API_URI
     ;
 
 }

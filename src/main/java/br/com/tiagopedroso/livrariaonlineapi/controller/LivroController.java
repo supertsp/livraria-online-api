@@ -1,17 +1,18 @@
 package br.com.tiagopedroso.livrariaonlineapi.controller;
 
 
-import br.com.tiagopedroso.livrariaonlineapi.infra.config.ApiUrl;
-import br.com.tiagopedroso.livrariaonlineapi.infra.config.MensagemRest;
+import br.com.tiagopedroso.livrariaonlineapi.dto.LivroAtualizarDto;
 import br.com.tiagopedroso.livrariaonlineapi.dto.LivroDto;
+import br.com.tiagopedroso.livrariaonlineapi.infra.config.ApiUrl;
+import br.com.tiagopedroso.livrariaonlineapi.infra.handler.RestMessageHandler;
+import br.com.tiagopedroso.livrariaonlineapi.infra.handler.SortHandler;
 import br.com.tiagopedroso.livrariaonlineapi.service.LivroService;
-import br.com.tiagopedroso.livrariaonlineapi.infra.tool.SortHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @RestController
@@ -31,10 +32,11 @@ public class LivroController {
         final var listaLivro = service.listar(PageRequest.of(pagina, quantidade, sort));
 
         if (listaLivro != null && listaLivro.getTotalElements() >= 1) {
-            return MensagemRest.ok(listaLivro);
+            return RestMessageHandler.ok(listaLivro);
         }
 
-        return MensagemRest.naoFoiPossivelEncontrarConteudo();
+//        return RestMessageHandler.naoFoiPossivelEncontrarConteudo();
+        throw new EntityNotFoundException();
     }
 
     @GetMapping("/{idLivro}")
@@ -42,32 +44,48 @@ public class LivroController {
         final var livroProcrurado = service.detalhar(idLivro);
 
         if (livroProcrurado != null) {
-            return MensagemRest.ok(livroProcrurado);
+            return RestMessageHandler.ok(livroProcrurado);
         }
 
-        return MensagemRest.naoFoiPossivelEncontrarConteudo();
+//        return RestMessageHandler.naoFoiPossivelEncontrarConteudo();
+        throw new EntityNotFoundException();
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody @Valid LivroDto livroDto, UriComponentsBuilder uriComponentsBuilder) {
-        final var livroCriado = service.cadastrar(livroDto);
+    public ResponseEntity<?> cadastrar(@RequestBody @Valid LivroDto dto) {
+        final var livroCriado = service.cadastrarOuAtualizar(dto);
 
         if (livroCriado != null) {
-            return MensagemRest.conteudoCriado(livroCriado.getId(), livroCriado);
+            return RestMessageHandler.conteudoCriado(livroCriado.getId(), livroCriado);
         }
 
-        return MensagemRest.naoFoiPossivelCriarNovoConteudo();
+//        return RestMessageHandler.naoFoiPossivelCriarNovoConteudo(
+//                "O idAutor '" + dto.getIdAutor() + "' passado é inválido"
+//        );
+        throw new EntityNotFoundException();
     }
 
     @PutMapping("/{idLivro}")
-    public ResponseEntity<?> atualizar(@PathVariable("idLivro") Long idLivro, @RequestBody LivroDto livroDto) {
-        final var livroAtualizado =  service.atualizar(idLivro, livroDto);
+    public ResponseEntity<?> atualizar(
+            @PathVariable("idLivro") Long idLivro,
+            @RequestBody @Valid LivroAtualizarDto atualizarDto
+    ) {
+        final var livroAtualizado =  service.atualizar(idLivro, atualizarDto);
 
         if (livroAtualizado != null) {
-            return MensagemRest.conteudoAtualizado(livroAtualizado);
+            return RestMessageHandler.conteudoAtualizado(livroAtualizado);
         }
 
-        return MensagemRest.naoFoiPossivelAtualizarConteudo();
+//        return RestMessageHandler.naoFoiPossivelAtualizarConteudo();
+        throw new EntityNotFoundException();
+    }
+
+    @DeleteMapping("/{idLivro}")
+    public ResponseEntity<?> excluir(@PathVariable("idLivro") Long idLivro) {
+        if (service.excluir(idLivro)) return RestMessageHandler.conteudoExcluido(idLivro);
+
+//        return RestMessageHandler.naoFoiPossivelExcluirConteudo();
+        throw new EntityNotFoundException();
     }
 
 }

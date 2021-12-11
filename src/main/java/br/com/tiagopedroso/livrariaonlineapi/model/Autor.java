@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,8 +25,6 @@ public class Autor {
 	private String email;
 
 	private LocalDate dataNascimento;
-
-	private LocalDateTime dataHoraCriacao;
 
 	private String miniCurriculo;
 

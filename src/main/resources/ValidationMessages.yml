@@ -1,0 +1,25 @@
+javax:
+  validation:
+    constraints:
+
+      NotNull:
+        message: Campo obrigatório
+
+      NotEmpty:
+        message: Campo obrigatório
+
+      NotBlank:
+        message: Campo obrigatório
+
+      Size:
+        message: Tamanho do campo deve estar entre {min} e {max}
+
+      Min:
+        message: Valor mínimo deve ser {value}
+
+      DecimalMin:
+        message: Valor mínimo deve ser {value}
+
+      PastOrPresent:
+        message: Data não pode ser maior do que hoje
+

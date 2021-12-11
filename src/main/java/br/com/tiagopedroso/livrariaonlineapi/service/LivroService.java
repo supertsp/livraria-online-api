@@ -1,5 +1,6 @@
 package br.com.tiagopedroso.livrariaonlineapi.service;
 
+import br.com.tiagopedroso.livrariaonlineapi.dto.LivroAtualizarDto;
 import br.com.tiagopedroso.livrariaonlineapi.dto.LivroDto;
 import br.com.tiagopedroso.livrariaonlineapi.model.Livro;
 import br.com.tiagopedroso.livrariaonlineapi.repository.LivroRepository;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+
+import static br.com.tiagopedroso.livrariaonlineapi.infra.tool.UpdateObject.mappingOnlyNullValues;
+import static br.com.tiagopedroso.livrariaonlineapi.infra.tool.UpdateObject.mappingValues;
 
 @Service
 @AllArgsConstructor
@@ -32,14 +36,17 @@ public class LivroService {
 
     public LivroDto detalhar(Long idLivro) {
         try {
-            return modelMapper.map(repository.findById(idLivro).orElseThrow(() -> new EntityNotFoundException()), LivroDto.class);
+            return modelMapper.map(
+                    repository.findById(idLivro).orElseThrow(() -> new EntityNotFoundException()),
+                    LivroDto.class
+            );
         } catch (Exception e) {
             return null;
         }
     }
 
     @Transactional
-    public LivroDto cadastrar(LivroDto livroDto) {
+    public LivroDto cadastrarOuAtualizar(LivroDto livroDto) {
         final var autorProcuradoDto = autorService.detalhar(livroDto.getIdAutor());
 
         if (autorProcuradoDto != null) {
@@ -47,7 +54,7 @@ public class LivroService {
             final var novoLivro = modelMapper.map(livroDto, Livro.class);
             final var livroSalvo = repository.save(novoLivro);
             livroDto = modelMapper.map(livroSalvo, LivroDto.class);
-            livroDto.setIdAutor(null);
+
             return livroDto;
         }
 
@@ -55,31 +62,25 @@ public class LivroService {
     }
 
     @Transactional
-    public LivroDto atualizar(Long idLivro, LivroDto bodyLivroDto) {
-        if (idLivro != null && bodyLivroDto != null && bodyLivroDto.getIdAutor() != null) {
-            final var livroProcurado = detalhar(idLivro);
-            final var autorProcuradoDto = autorService.detalhar(bodyLivroDto.getIdAutor());
+    public LivroDto atualizar(Long idLivro, LivroAtualizarDto atualizarDto) {
+        if (idLivro == null || atualizarDto == null) return null;
 
-            if (livroProcurado != null && autorProcuradoDto != null) {
-                final var novoTitulo = bodyLivroDto.getTitulo() == null ?
-                        livroProcurado.getTitulo() : bodyLivroDto.getTitulo();
+        final var dto = mappingValues(atualizarDto, LivroDto.class);
+        dto.setId(idLivro);
 
-                final var novaDataLancamento = bodyLivroDto.getDataLancamento() == null ?
-                        livroProcurado.getDataLancamento() : bodyLivroDto.getDataLancamento();
+        final var livroProcurado = detalhar(idLivro);
+        if (livroProcurado == null) return null;
 
-                final var novaQuantidadePaginas = bodyLivroDto.getQuantidadePaginas() == null ?
-                        livroProcurado.getQuantidadePaginas() : bodyLivroDto.getQuantidadePaginas();
-
-                livroProcurado.setTitulo(novoTitulo);
-                livroProcurado.setDataLancamento(novaDataLancamento);
-                livroProcurado.setQuantidadePaginas(novaQuantidadePaginas);
-                livroProcurado.setIdAutor(bodyLivroDto.getIdAutor());
-
-                return cadastrar(livroProcurado);
-            }
-        }
-
-        return null;
+        return cadastrarOuAtualizar(
+                mappingOnlyNullValues(livroProcurado, dto)
+        );
     }
 
+    @Transactional
+    public boolean excluir(Long idLivro) {
+        if (idLivro == null) return false;
+
+        repository.deleteById(idLivro);
+        return true;
+    }
 }

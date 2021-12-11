@@ -1,4 +1,4 @@
-package br.com.tiagopedroso.livrariaonlineapi.infra.tool;
+package br.com.tiagopedroso.livrariaonlineapi.infra.handler;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -7,7 +7,7 @@ public class OrderedMapHandler {
 
     private OrderedMapHandler () {}
 
-    public static <T> Map criar(T... chavesValores) {
+    public static <T> Map create(T... chavesValores) {
         if (chavesValores.length == 0 || chavesValores.length % 2 != 0) return new LinkedHashMap<>();
 
         final var map = new LinkedHashMap<>();

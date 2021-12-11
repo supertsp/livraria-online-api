@@ -1,15 +1,19 @@
 package br.com.tiagopedroso.livrariaonlineapi.controller;
 
+import br.com.tiagopedroso.livrariaonlineapi.dto.AutorAtualizarDto;
 import br.com.tiagopedroso.livrariaonlineapi.dto.AutorDto;
 import br.com.tiagopedroso.livrariaonlineapi.infra.config.ApiUrl;
-import br.com.tiagopedroso.livrariaonlineapi.infra.config.MensagemRest;
-import br.com.tiagopedroso.livrariaonlineapi.infra.tool.SortHandler;
+import br.com.tiagopedroso.livrariaonlineapi.infra.exception.RestError400Exception;
+import br.com.tiagopedroso.livrariaonlineapi.infra.exception.RestError404Exception;
+import br.com.tiagopedroso.livrariaonlineapi.infra.handler.RestMessageHandler;
+import br.com.tiagopedroso.livrariaonlineapi.infra.handler.SortHandler;
 import br.com.tiagopedroso.livrariaonlineapi.service.AutorService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @RestController
@@ -17,10 +21,12 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class AutorController {
 
+    public static final String RESOURCE_NAME = "autores";
+    public static final String RESOURCE_NAME_SINGULAR = "autor";
+
     private AutorService service;
 
     @GetMapping
-//    public ResponseEntity<?> listar(@PageableDefault(size = 2, sort = {"nome"}) Pageable pageable) {  //forma de chamar utilizando um Pageable
     public ResponseEntity<?> listar(
             @RequestParam(required = false, defaultValue = "0") Integer pagina,
             @RequestParam(required = false, defaultValue = "50") Integer quantidade,
@@ -30,10 +36,10 @@ public class AutorController {
         final var listaAutor = service.listar(PageRequest.of(pagina, quantidade, sort));
 
         if (listaAutor != null && listaAutor.getTotalElements() >= 1) {
-            return MensagemRest.ok(listaAutor);
+            return RestMessageHandler.ok(listaAutor);
         }
 
-        return MensagemRest.naoFoiPossivelEncontrarConteudo();
+        throw RestError404Exception.build("There are no '%s' registered", RESOURCE_NAME);
     }
 
     @GetMapping("/{idAutor}")
@@ -41,32 +47,38 @@ public class AutorController {
         final var autorProcrurado = service.detalhar(idAutor);
 
         if (autorProcrurado != null) {
-            return MensagemRest.ok(autorProcrurado);
+            return RestMessageHandler.ok(autorProcrurado);
         }
 
-        return MensagemRest.naoFoiPossivelEncontrarConteudo();
+        throw RestError404Exception.build("Not found '%s' with id '%d'", RESOURCE_NAME_SINGULAR, idAutor);
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody @Valid AutorDto autorDto) {
-        final var autorCriado = service.cadastrar(autorDto);
-
-        if (autorCriado != null) {
-            return MensagemRest.conteudoCriado(autorCriado.getId(), autorCriado);
-        }
-
-        return MensagemRest.naoFoiPossivelCriarNovoConteudo();
+    public ResponseEntity<?> cadastrar(@RequestBody @Valid AutorDto dto) {
+        final var autorCriado = service.cadastrarOuAtualizar(dto);
+        return RestMessageHandler.conteudoCriado(autorCriado.getId(), autorCriado);
     }
 
     @PutMapping("/{idAutor}")
-    public ResponseEntity<?> atualizar(@PathVariable("idAutor") Long idAutor, @RequestBody @Valid AutorDto autorDto) {
-        final var autorAtualizado =  service.atualizar(idAutor, autorDto);
+    public ResponseEntity<?> atualizar(
+            @PathVariable("idAutor") Long idAutor,
+            @RequestBody @Valid AutorAtualizarDto atualizarDto
+    ) {
+        final var autorAtualizado = service.atualizar(idAutor, atualizarDto);
 
         if (autorAtualizado != null) {
-            return MensagemRest.conteudoAtualizado(autorAtualizado);
+            return RestMessageHandler.conteudoAtualizado(autorAtualizado);
         }
 
-        return MensagemRest.naoFoiPossivelAtualizarConteudo();
+        throw  RestError400Exception.build("Could not update '%s' with id '%d'", RESOURCE_NAME_SINGULAR, idAutor);
+    }
+
+    @DeleteMapping("/{idAutor}")
+    public ResponseEntity<?> excluir(@PathVariable("idAutor") Long idAutor) {
+        if (service.excluir(idAutor)) return RestMessageHandler.conteudoExcluido(idAutor);
+
+//        return RestMessageHandler.naoFoiPossivelExcluirConteudo();
+        throw new EntityNotFoundException();
     }
 
 }

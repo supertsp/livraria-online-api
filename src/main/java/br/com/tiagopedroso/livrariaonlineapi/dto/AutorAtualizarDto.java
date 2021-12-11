@@ -6,23 +6,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Builder()
-public class AtualizaAutorDto {
+public class AutorAtualizarDto {
 
     private String nome;
 
-    @Pattern(regexp = "(\\w+)\\@(\\w+)\\.(com|gov|org|net|br)")
+    @Size(max = 255)
+    @Pattern(regexp = "^([a-zA-Z0-9_\\.\\-])+\\@([a-zA-Z0-9_\\.\\-])+\\.(gov|org|edu|com|mil|net|br)")
     private String email;
 
+    @PastOrPresent
     private LocalDate dataNascimento;
 
+    @Size(max = 255)
     private String miniCurriculo;
 
 }
