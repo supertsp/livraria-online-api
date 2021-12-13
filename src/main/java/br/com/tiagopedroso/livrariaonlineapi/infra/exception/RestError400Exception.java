@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 @ToString(callSuper = true)
 public class RestError400Exception extends RestErrorException {
 
-    public static final String TITLE = "Unfortunately, the payload contains one or more invalid items. :(";
+    public static final String TITLE = "Unfortunately, the searched resource or payload contains one or more invalid items. :(";
 
     public RestError400Exception(Object detail, HttpServletRequest request) {
         super(
@@ -26,7 +26,7 @@ public class RestError400Exception extends RestErrorException {
     }
 
     public static RestError400Exception build(Object detail, Object... detailArgs) {
-        final var stringDetail = detail == null ? "" : detailArgs.toString();
+        final var stringDetail = detail == null ? "" : detail.toString();
         return new RestError400Exception(String.format(stringDetail, detailArgs), null);
     }
 

@@ -1,9 +1,6 @@
 package br.com.tiagopedroso.livrariaonlineapi.infra.config;
 
-import br.com.tiagopedroso.livrariaonlineapi.infra.exception.RestError400Exception;
-import br.com.tiagopedroso.livrariaonlineapi.infra.exception.RestError400WithListException;
-import br.com.tiagopedroso.livrariaonlineapi.infra.exception.RestError404Exception;
-import br.com.tiagopedroso.livrariaonlineapi.infra.exception.RestError500Exception;
+import br.com.tiagopedroso.livrariaonlineapi.infra.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -31,7 +28,7 @@ public class ExceptionHandlerConfig {
         return error;
     }
 
-    @ExceptionHandler({HttpMessageNotReadableException.class, HttpRequestMethodNotSupportedException.class})
+    @ExceptionHandler({RestError400Exception.class, HttpMessageNotReadableException.class, HttpRequestMethodNotSupportedException.class})
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestError400Exception handlingError400(Exception ex, HttpServletRequest request) {
         final var error = RestError400Exception.build(sliceErrorMessageBySemicolon(ex), request);
@@ -65,7 +62,11 @@ public class ExceptionHandlerConfig {
     private String sliceErrorMessageBySemicolon(Exception ex) {
         if (ex == null) return "";
 
-        final var message = ex.getMessage();
+        if (ex instanceof RestErrorException) {
+            return ((RestErrorException) ex).getDetail();
+        }
+
+        final var message = ex.getMessage() == null ? "" : ex.getMessage();
         final var indexOfSemicolon = message.indexOf(";");
 
         if (indexOfSemicolon != -1) {

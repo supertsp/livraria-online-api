@@ -1,7 +1,8 @@
 package br.com.tiagopedroso.livrariaonlineapi.controller;
 
 import br.com.tiagopedroso.livrariaonlineapi.infra.config.ApiUrl;
-import br.com.tiagopedroso.livrariaonlineapi.model.*;
+import br.com.tiagopedroso.livrariaonlineapi.model.Autor;
+import br.com.tiagopedroso.livrariaonlineapi.model.Livro;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,10 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Transactional
 @AutoConfigureTestEntityManager
-class AutorControllerTest {
+class LivroControllerTest {
 
     private static final MediaType JSON = MediaType.APPLICATION_JSON;
-    private static final String URL_RESOURCE = ApiUrl.BASE_URI + "/autores";
+    private static final String URL_RESOURCE = ApiUrl.BASE_URI + "/livros";
 
     @Autowired
     private MockMvc mvc;
@@ -40,6 +41,8 @@ class AutorControllerTest {
 
     private Autor autorDb01;
     private Autor autorDb02;
+    private Livro livroDb01;
+    private Livro livroDb02;
 
     @BeforeEach
     void beforeEach() {
@@ -60,7 +63,26 @@ class AutorControllerTest {
                 .miniCurriculo("meu mini curriculo 2")
                 .build()
         );
+
+        livroDb01 = this.em.persist(Livro
+                .builder()
+                .titulo("Teste de Titulo")
+                .dataLancamento(LocalDate.now())
+                .quantidadePaginas(101)
+                .autor(autorDb01)
+                .build()
+        );
+
+        livroDb02 = this.em.persist(Livro
+                .builder()
+                .titulo("Teste de Titulo 2")
+                .dataLancamento(LocalDate.now())
+                .quantidadePaginas(102)
+                .autor(autorDb02)
+                .build()
+        );
     }
+
 
     /*---------------------------------------------------------------------+
     |  GET listar(Integer pagina, Integer quantidade, String[] ordenacao)  |
@@ -68,7 +90,7 @@ class AutorControllerTest {
     */
 
     @Test
-    void listar__sem_parametros_paginacao_Entao_retornar_json_autores_paginados() throws Exception {
+    void listar__sem_parametros_paginacao_Entao_retornar_json_livros_paginados() throws Exception {
         //Dado
         var jsonResposta = "{"
                 + " \"status\": \"OK\", "
@@ -78,7 +100,7 @@ class AutorControllerTest {
                 + " \"pageSize\": 50, "
                 + " \"totalPages\": 1, "
                 + " \"totalElements\": 2, "
-                + " \"sorting\": [ \"ASC,nome\" ] "
+                + " \"sorting\": [ \"ASC,titulo\" ] "
                 + "}";
 
         //Quando
@@ -89,13 +111,14 @@ class AutorControllerTest {
         ;
     }
 
+
     /*-----------------------------+
-    |  GET procurar(Long idAutor)  |
+    |  GET procurar(Long idLivro)  |
     +------------------------------+
     */
 
     @Test
-    void procurar__passando_idAutor_Entao_retornar_json_autor() throws Exception {
+    void procurar__passando_idLivro_Entao_retornar_json_livro() throws Exception {
         //Dado
         var jsonResposta = "{"
                 + " \"status\": \"OK\", "
@@ -104,26 +127,28 @@ class AutorControllerTest {
                 + "}";
 
         //Quando
-        mvc.perform(get(URL_RESOURCE + "/" + autorDb01.getId()))
+        mvc.perform(get(URL_RESOURCE + "/" + livroDb01.getId()))
                 //Então
                 .andExpect(status().isOk())
                 .andExpect(content().json(jsonResposta)) //json original é alterado na resposta
         ;
     }
 
+
+
     /*-------------------------------+
-    |  POST cadastrar(AutorDto dto)  |
+    |  POST cadastrar(LivroDto dto)  |
     +--------------------------------+
     */
 
     @Test
-    void cadastrar__com_json_preenchido_Entao_retornar_json_autor() throws Exception {
+    void cadastrar__com_json_preenchido_Entao_retornar_json_livro() throws Exception {
         //Dado
         var jsonEntrada = "{"
-                + " \"nome\": \"testes\", "
-                + " \"email\": \"testes@testes.com\", "
-                + " \"dataNascimento\": \"1999-02-28\", "
-                + " \"miniCurriculo\": \"meu mini curriculo\" "
+                + " \"titulo\": \"Novo Título\", "
+                + " \"dataLancamento\": \"2020-02-28\", "
+                + " \"quantidadePaginas\": 150, "
+                + " \"idAutor\": " + autorDb01.getId()
                 + "}";
 
         var jsonResposta = "{"
@@ -159,13 +184,14 @@ class AutorControllerTest {
     }
 
 
+
     /*--------------------------------------------------------------+
-    |  PUT atualizar(Long idAutor, AutorAtualizarDto atualizarDto)  |
+    |  PUT atualizar(Long idLivro, LivroAtualizarDto atualizarDto)  |
     +---------------------------------------------------------------+
     */
 
     @Test
-    void atualizar__com_parametro_idAutor_json_preenchido_Entao_retornar_json_autor() throws Exception {
+    void atualizar__com_parametro_idLivro_json_preenchido_Entao_retornar_json_livro() throws Exception {
         //Dado
         var jsonEntrada = "{"
                 + " \"nome\": \"testes mudado\", "
@@ -179,7 +205,7 @@ class AutorControllerTest {
                 + "}";
 
         //Quando
-        mvc.perform(put(URL_RESOURCE + "/" + autorDb01.getId())
+        mvc.perform(put(URL_RESOURCE + "/" + livroDb01.getId())
                         .contentType(JSON)
                         .content(jsonEntrada)
                 )
@@ -189,13 +215,14 @@ class AutorControllerTest {
         ;
     }
 
+
     /*-------------------------------+
-    |  DELETE excluir(Long idAutor)  |
+    |  DELETE excluir(Long idLivro)  |
     +--------------------------------+
     */
 
     @Test
-    void excluir__com_parametro_idAutor_Entao_retornar_sucesso() throws Exception {
+    void excluir__com_json_preenchido_Entao_retornar_sucesso() throws Exception {
         //Dado
         var jsonResposta = "{"
                 + " \"status\": \"OK\", "
@@ -203,7 +230,7 @@ class AutorControllerTest {
                 + "}";
 
         //Quando
-        mvc.perform(delete(URL_RESOURCE + "/" + autorDb02.getId()))
+        mvc.perform(delete(URL_RESOURCE + "/" + livroDb01.getId()))
                 //Então
                 .andExpect(status().isOk())
                 .andExpect(content().json(jsonResposta)) //json original é alterado na resposta
