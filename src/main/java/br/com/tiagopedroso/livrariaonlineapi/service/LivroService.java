@@ -1,5 +1,6 @@
 package br.com.tiagopedroso.livrariaonlineapi.service;
 
+import br.com.tiagopedroso.livrariaonlineapi.controller.LivroController;
 import br.com.tiagopedroso.livrariaonlineapi.dto.LivroAtualizarDto;
 import br.com.tiagopedroso.livrariaonlineapi.dto.LivroDto;
 import br.com.tiagopedroso.livrariaonlineapi.model.Livro;
@@ -16,6 +17,8 @@ import javax.persistence.EntityNotFoundException;
 import static br.com.tiagopedroso.livrariaonlineapi.infra.tool.UpdateObject.mappingOnlyNullValues;
 import static br.com.tiagopedroso.livrariaonlineapi.infra.tool.UpdateObject.mappingValues;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @Service
 @AllArgsConstructor
 public class LivroService {
@@ -27,7 +30,13 @@ public class LivroService {
     public Page<LivroDto> listar(Pageable pageable) {
         try {
             return repository.findAll(pageable)
-                    .map(livro -> modelMapper.map(livro, LivroDto.class));
+                    .map(livro -> {
+                        return modelMapper.map(livro, LivroDto.class)
+                                .add(
+                                      linkTo(methodOn(LivroController.class).procurar(livro.getId()))
+                                              .withSelfRel()
+                                );
+                    });
         } catch (Exception e) {
             //Passou parametros Pageable inválidos?
             return null;
@@ -39,6 +48,8 @@ public class LivroService {
             return modelMapper.map(
                     repository.findById(idLivro).orElseThrow(() -> new EntityNotFoundException()),
                     LivroDto.class
+            ).add(
+                    linkTo(methodOn(LivroController.class).procurar(idLivro)).withSelfRel()
             );
         } catch (Exception e) {
             return null;
@@ -53,9 +64,10 @@ public class LivroService {
             livroDto.setAutor(autorProcuradoDto);
             final var novoLivro = modelMapper.map(livroDto, Livro.class);
             final var livroSalvo = repository.save(novoLivro);
-            livroDto = modelMapper.map(livroSalvo, LivroDto.class);
-
-            return livroDto;
+            return modelMapper.map(livroSalvo, LivroDto.class)
+                    .add(
+                            linkTo(methodOn(LivroController.class).procurar(livroSalvo.getId())).withSelfRel()
+                    );
         }
 
         return null;
@@ -78,8 +90,6 @@ public class LivroService {
 
     @Transactional
     public boolean excluir(Long idLivro) {
-        if (idLivro == null) return false;
-
         repository.deleteById(idLivro);
         return true;
     }

@@ -3,23 +3,23 @@ javax:
     constraints:
 
       NotNull:
-        message: Campo obrigatÛrio
+        message: Campo obrigat√≥rio
 
       NotEmpty:
-        message: Campo obrigatÛrio
+        message: Campo obrigat√≥rio
 
       NotBlank:
-        message: Campo obrigatÛrio
+        message: Campo obrigat√≥rio
 
       Size:
         message: Tamanho do campo deve estar entre {min} e {max}
 
       Min:
-        message: Valor mÌnimo deve ser {value}
+        message: Valor m√≠nimo deve ser {value}
 
       DecimalMin:
-        message: Valor mÌnimo deve ser {value}
+        message: Valor m√≠nimo deve ser {value}
 
       PastOrPresent:
-        message: Data n„o pode ser maior do que hoje
+        message: Data n√£o pode ser maior do que hoje
 

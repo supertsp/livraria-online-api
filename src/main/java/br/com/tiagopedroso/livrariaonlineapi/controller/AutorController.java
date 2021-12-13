@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @RestController
@@ -56,7 +55,7 @@ public class AutorController {
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody @Valid AutorDto dto) {
         final var autorCriado = service.cadastrarOuAtualizar(dto);
-        return RestMessageHandler.conteudoCriado(autorCriado.getId(), autorCriado);
+        return RestMessageHandler.resourceCreated(autorCriado.getId(), autorCriado);
     }
 
     @PutMapping("/{idAutor}")
@@ -67,7 +66,7 @@ public class AutorController {
         final var autorAtualizado = service.atualizar(idAutor, atualizarDto);
 
         if (autorAtualizado != null) {
-            return RestMessageHandler.conteudoAtualizado(autorAtualizado);
+            return RestMessageHandler.resourceUpdated(autorAtualizado);
         }
 
         throw  RestError400Exception.build("Could not update '%s' with id '%d'", RESOURCE_NAME_SINGULAR, idAutor);
@@ -75,10 +74,8 @@ public class AutorController {
 
     @DeleteMapping("/{idAutor}")
     public ResponseEntity<?> excluir(@PathVariable("idAutor") Long idAutor) {
-        if (service.excluir(idAutor)) return RestMessageHandler.conteudoExcluido(idAutor);
-
-//        return RestMessageHandler.naoFoiPossivelExcluirConteudo();
-        throw new EntityNotFoundException();
+        service.excluir(idAutor);
+        return RestMessageHandler.resourceDeleted(idAutor);
     }
 
 }

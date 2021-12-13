@@ -14,10 +14,10 @@ public final class RestMessageHandler {
     }
 
     private static final String
-            CHAVE_STATUS = "status",
-            CHAVE_STATUS_CODE = "statusCode",
-            CHAVE_MENSAGEM = "mensagem",
-            CHAVE_RESPOSTA = "resposta"
+            KEY_STATUS = "status",
+            KEY_STATUS_CODE = "statusCode",
+            KEY_MESSAGE = "message",
+            KEY_CONTENT = "content"
     ;
 
     public static <T> ResponseEntity<?> ok(T objetoDeResposta) {
@@ -25,33 +25,36 @@ public final class RestMessageHandler {
 
         if (objetoDeResposta instanceof Page) {
             final var page = (Page) objetoDeResposta;
-            final var ordenacao = page.getSort().toList().stream()
+            final var sortList = page.getSort().toList().stream()
                     .map(order -> order.getDirection() + "," + order.getProperty())
                     .collect(Collectors.toList());
 
             body = OrderedMapHandler.create(
-                    CHAVE_STATUS, "OK",
-                    CHAVE_RESPOSTA, page.getContent(),
-                    "pagina", page.getNumber(),
-                    "quantidade", page.getSize(),
-                    "totalElementos", page.getTotalElements(),
-                    "totalPaginas", page.getTotalPages(),
-                    "ordenacao", ordenacao
+                    KEY_STATUS, "OK",
+                    KEY_STATUS_CODE, 200,
+                    KEY_CONTENT, page.getContent(),
+                    "pageNumber", page.getNumber(),
+                    "pageSize", page.getSize(),
+                    "totalPages", page.getTotalPages(),
+                    "totalElements", page.getTotalElements(),
+                    "sorting", sortList
             );
         } else {
             body = OrderedMapHandler.create(
-                    CHAVE_STATUS, "OK",
-                    CHAVE_RESPOSTA, objetoDeResposta
+                    KEY_STATUS, "OK",
+                    KEY_STATUS_CODE, 200,
+                    KEY_CONTENT, objetoDeResposta
             );
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    public static <T> ResponseEntity<?> conteudoCriado(Long novoId, T objetoDeResposta) {
+    public static <T> ResponseEntity<?> resourceCreated(Long novoId, T objetoDeResposta) {
         final var body = OrderedMapHandler.create(
-                CHAVE_STATUS, "OK",
-                CHAVE_RESPOSTA, objetoDeResposta
+                KEY_STATUS, "OK",
+                KEY_STATUS_CODE, 201,
+                KEY_CONTENT, objetoDeResposta
         );
 
         var uri = ServletUriComponentsBuilder
@@ -63,67 +66,24 @@ public final class RestMessageHandler {
         return ResponseEntity.created(uri).body(body);
     }
 
-    public static <T> ResponseEntity<?> conteudoAtualizado(T objetoDeResposta) {
+    public static <T> ResponseEntity<?> resourceUpdated(T objetoDeResposta) {
         final var body = OrderedMapHandler.create(
-                CHAVE_STATUS, "OK",
-                CHAVE_RESPOSTA, objetoDeResposta
-        );
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(body);
-    }
-
-    public static <T> ResponseEntity<?> conteudoExcluido(Long idConteudo) {
-        final var body = OrderedMapHandler.create(
-                CHAVE_STATUS, "OK",
-                CHAVE_RESPOSTA, "O conteúdo de id '" + idConteudo + "' foi excluído com sucesso"
+                KEY_STATUS, "OK",
+                KEY_STATUS_CODE, 200,
+                KEY_CONTENT, objetoDeResposta
         );
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-//    public static ResponseEntity<?> naoFoiPossivelEncontrarConteudo() {
-//        final var body = OrderedMapHandler.create(
-//                CHAVE_STATUS, "KO",
-//                CHAVE_MENSAGEM, "Não foi possível ENCONTRAR conteúdo :("
-//        );
-//
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
-//    }
-//
-//    public static ResponseEntity<?> naoFoiPossivelCriarNovoConteudo() {
-//        final var body = OrderedMapHandler.create(
-//                CHAVE_STATUS, "KO",
-//                CHAVE_MENSAGEM, "Não foi possível CRIAR um novo conteúdo :O"
-//        );
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-//    }
-//
-//    public static ResponseEntity<?> naoFoiPossivelCriarNovoConteudo(String motivo) {
-//        final var body = OrderedMapHandler.create(
-//                CHAVE_STATUS, "KO",
-//                CHAVE_MENSAGEM, "Não foi possível CRIAR um novo conteúdo. " + motivo + " :O"
-//        );
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-//    }
-//
-//    public static ResponseEntity<?> naoFoiPossivelAtualizarConteudo() {
-//        final var body = OrderedMapHandler.create(
-//                CHAVE_STATUS, "KO",
-//                CHAVE_MENSAGEM, "Não foi possível ATUALIZAR conteúdo :P"
-//        );
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-//    }
-//
-//    public static ResponseEntity<?> naoFoiPossivelExcluirConteudo() {
-//        final var body = OrderedMapHandler.create(
-//                CHAVE_STATUS, "KO",
-//                CHAVE_MENSAGEM, "Não foi possível EXCLUIR conteúdo :/"
-//        );
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-//    }
+    public static <T> ResponseEntity<?> resourceDeleted(Long idConteudo) {
+        final var body = OrderedMapHandler.create(
+                KEY_STATUS, "OK",
+                KEY_STATUS_CODE, 200,
+                KEY_CONTENT, "The resource id '" + idConteudo + "' was deleted successfully"
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
 
 }

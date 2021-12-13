@@ -25,12 +25,13 @@ public class AutorService {
 
     public Page<AutorDto> listar(Pageable pageable) {
         try {
-            //greeting.add(linkTo(methodOn(GreetingController.class).greeting(name)).withSelfRel());
             return repository.findAll(pageable)
                     .map(autor -> {
-                        return mappingValues(autor, AutorDto.class).add(
-                                linkTo(methodOn(AutorController.class).procurar(autor.getId())).withSelfRel()
-                        );
+                        return mappingValues(autor, AutorDto.class)
+                                .add(
+                                        linkTo(methodOn(AutorController.class).procurar(autor.getId()))
+                                                .withSelfRel()
+                                );
                     });
 
         } catch (Exception e) {
@@ -41,9 +42,10 @@ public class AutorService {
 
     public AutorDto detalhar(Long idAutor) {
         try {
-            return mappingValues(repository.findById(idAutor).orElse(null), AutorDto.class).add(
-                    linkTo(methodOn(AutorController.class).procurar(idAutor)).withSelfRel()
-            );
+            return mappingValues(repository.findById(idAutor).orElse(null), AutorDto.class)
+                    .add(
+                            linkTo(methodOn(AutorController.class).procurar(idAutor)).withSelfRel()
+                    );
         } catch (Exception e) {
             return null;
         }
@@ -53,7 +55,10 @@ public class AutorService {
     public AutorDto cadastrarOuAtualizar(AutorDto dto) {
         final var novoAutor = mappingValues(dto, Autor.class);
         final var autorSalvo = repository.save(novoAutor);
-        return mappingValues(autorSalvo, dto);
+        return mappingValues(autorSalvo, dto)
+                .add(
+                        linkTo(methodOn(AutorController.class).procurar(autorSalvo.getId())).withSelfRel()
+                );
     }
 
     @Transactional
@@ -73,8 +78,6 @@ public class AutorService {
 
     @Transactional
     public boolean excluir(Long idAutor) {
-        if (idAutor == null) return false;
-
         repository.deleteById(idAutor);
         return true;
     }

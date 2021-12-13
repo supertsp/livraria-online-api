@@ -4,6 +4,8 @@ package br.com.tiagopedroso.livrariaonlineapi.controller;
 import br.com.tiagopedroso.livrariaonlineapi.dto.LivroAtualizarDto;
 import br.com.tiagopedroso.livrariaonlineapi.dto.LivroDto;
 import br.com.tiagopedroso.livrariaonlineapi.infra.config.ApiUrl;
+import br.com.tiagopedroso.livrariaonlineapi.infra.exception.RestError400Exception;
+import br.com.tiagopedroso.livrariaonlineapi.infra.exception.RestError404Exception;
 import br.com.tiagopedroso.livrariaonlineapi.infra.handler.RestMessageHandler;
 import br.com.tiagopedroso.livrariaonlineapi.infra.handler.SortHandler;
 import br.com.tiagopedroso.livrariaonlineapi.service.LivroService;
@@ -12,13 +14,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping(ApiUrl.BASE_URI + "/livros")
 @AllArgsConstructor
 public class LivroController {
+
+    public static final String RESOURCE_NAME = "livros";
+    public static final String RESOURCE_NAME_SINGULAR = "livro";
 
     private LivroService service;
 
@@ -35,8 +39,7 @@ public class LivroController {
             return RestMessageHandler.ok(listaLivro);
         }
 
-//        return RestMessageHandler.naoFoiPossivelEncontrarConteudo();
-        throw new EntityNotFoundException();
+        throw RestError404Exception.build("There are no '%s' registered", RESOURCE_NAME);
     }
 
     @GetMapping("/{idLivro}")
@@ -47,22 +50,13 @@ public class LivroController {
             return RestMessageHandler.ok(livroProcrurado);
         }
 
-//        return RestMessageHandler.naoFoiPossivelEncontrarConteudo();
-        throw new EntityNotFoundException();
+        throw RestError404Exception.build("Not found '%s' with id '%d'", RESOURCE_NAME_SINGULAR, idLivro);
     }
 
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody @Valid LivroDto dto) {
         final var livroCriado = service.cadastrarOuAtualizar(dto);
-
-        if (livroCriado != null) {
-            return RestMessageHandler.conteudoCriado(livroCriado.getId(), livroCriado);
-        }
-
-//        return RestMessageHandler.naoFoiPossivelCriarNovoConteudo(
-//                "O idAutor '" + dto.getIdAutor() + "' passado é inválido"
-//        );
-        throw new EntityNotFoundException();
+        return RestMessageHandler.resourceCreated(livroCriado.getId(), livroCriado);
     }
 
     @PutMapping("/{idLivro}")
@@ -70,22 +64,19 @@ public class LivroController {
             @PathVariable("idLivro") Long idLivro,
             @RequestBody @Valid LivroAtualizarDto atualizarDto
     ) {
-        final var livroAtualizado =  service.atualizar(idLivro, atualizarDto);
+        final var livroAtualizado = service.atualizar(idLivro, atualizarDto);
 
         if (livroAtualizado != null) {
-            return RestMessageHandler.conteudoAtualizado(livroAtualizado);
+            return RestMessageHandler.resourceUpdated(livroAtualizado);
         }
 
-//        return RestMessageHandler.naoFoiPossivelAtualizarConteudo();
-        throw new EntityNotFoundException();
+        throw  RestError400Exception.build("Could not update '%s' with id '%d'", RESOURCE_NAME_SINGULAR, idLivro);
     }
 
     @DeleteMapping("/{idLivro}")
     public ResponseEntity<?> excluir(@PathVariable("idLivro") Long idLivro) {
-        if (service.excluir(idLivro)) return RestMessageHandler.conteudoExcluido(idLivro);
-
-//        return RestMessageHandler.naoFoiPossivelExcluirConteudo();
-        throw new EntityNotFoundException();
+        service.excluir(idLivro);
+        return RestMessageHandler.resourceDeleted(idLivro);
     }
 
 }

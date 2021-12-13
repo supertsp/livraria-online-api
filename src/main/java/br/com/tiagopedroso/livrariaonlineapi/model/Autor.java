@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor()
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Autor {
@@ -31,5 +31,5 @@ public class Autor {
 	//Relacionamentos
 	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
 	private List<Livro> livros;
-	
+
 }
