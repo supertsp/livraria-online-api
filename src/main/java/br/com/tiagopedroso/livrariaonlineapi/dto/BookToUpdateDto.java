@@ -18,25 +18,25 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LivroAtualizarDto {
+public class BookToUpdateDto {
 
     @Size(min = 10)
-    private String titulo;
+    private String title;
 
     @PastOrPresent
-    private LocalDate dataLancamento;
+    private LocalDate releaseDate;
 
     @Min(100)
-    private Integer quantidadePaginas;
+    private Integer numberOfPages;
 
     @JsonIgnore
-    private AutorDto autor;
+    private AuthorDto author;
 
-    public Long idAutor;
+    public Long authorId;
 
-    @JsonGetter("autor")
-    public String getNomeAutor() {
-        return autor == null ? null : autor.getNome();
+    @JsonGetter("author")
+    public String getAuthorName() {
+        return author == null ? null : author.getName();
     }
 
 }

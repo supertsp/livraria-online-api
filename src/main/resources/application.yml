@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/livraria
+    url: jdbc:mysql://localhost:3306/bookstore
     username: root
     password:
   jpa:
@@ -12,6 +12,7 @@ spring:
 #      # update       = increment DB
 #      # validate     = ?
 #      # create-drop  = reset/create and drops DB when SeessionFactory closes
+#      # ref.: https://docs.spring.io/spring-boot/docs/1.1.0.M1/reference/html/howto-database-initialization.html
 #      ddl-auto: update
     show-sql: true
     properties:

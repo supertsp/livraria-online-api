@@ -16,33 +16,33 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LivroDto extends RepresentationModel<LivroDto> {
+public class BookDto extends RepresentationModel<BookDto> {
 
     private Long id;
 
     @NotNull
     @NotEmpty
     @Size(min = 10)
-    private String titulo;
+    private String title;
 
     @NotNull
     @PastOrPresent
-    private LocalDate dataLancamento;
+    private LocalDate releaseDate;
 
     @NotNull
     @Min(100)
-    private Integer quantidadePaginas;
+    private Integer numberOfPages;
 
     @JsonIgnore
-    private AutorDto autor;
+    private AuthorDto author;
 
     @NotNull
-    @JsonSetter("idAutor")
-    private Long idAutor;
+    @JsonSetter("authorId")
+    private Long authorId;
 
-    @JsonGetter("nomeAutor")
-    public String getNomeAutor() {
-        return autor == null ? null : autor.getNome();
+    @JsonGetter("authorName")
+    public String getAuthorName() {
+        return author == null ? null : author.getName();
     }
 
 }

@@ -13,23 +13,23 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AutorDto extends RepresentationModel<AutorDto> {
+public class AuthorDto extends RepresentationModel<AuthorDto> {
 
     private Long id;
 
     @NotNull
     @NotEmpty
     @Size(min = 5, max = 255)
-    private String nome;
+    private String name;
 
     @Size(max = 255)
     @Pattern(regexp = "^([a-zA-Z0-9_\\.\\-])+\\@([a-zA-Z0-9_\\.\\-])+\\.(gov|org|edu|com|mil|net|br)")
     private String email;
 
     @PastOrPresent
-    private LocalDate dataNascimento;
+    private LocalDate birthDate;
 
     @Size(max = 255)
-    private String miniCurriculo;
+    private String miniResume;
 
 }

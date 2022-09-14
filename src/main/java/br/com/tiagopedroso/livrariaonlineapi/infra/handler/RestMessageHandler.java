@@ -16,7 +16,6 @@ public final class RestMessageHandler {
     private static final String
             KEY_STATUS = "status",
             KEY_STATUS_CODE = "statusCode",
-            KEY_MESSAGE = "message",
             KEY_CONTENT = "content"
     ;
 

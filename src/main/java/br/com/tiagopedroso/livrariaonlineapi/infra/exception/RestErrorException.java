@@ -3,11 +3,11 @@ package br.com.tiagopedroso.livrariaonlineapi.infra.exception;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 /**
  * Defines an error model based on the IETF specification RFC 787
@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-@ToString
 @JsonIgnoreProperties({ "cause", "localizedMessage", "message", "stackTrace", "suppressed"})
 public abstract class RestErrorException extends RuntimeException {
 
@@ -61,50 +60,54 @@ public abstract class RestErrorException extends RuntimeException {
      */
     protected LocalDateTime timestamp;
 
-    protected RestErrorException() {
+    public RestErrorException() {
+        super("Generic RestErrorException!");
+        this.statusCode = HttpStatus.INTERNAL_SERVER_ERROR.value();
+        this.title = "Generic RestErrorException!";
+        this.timestamp = LocalDateTime.now();
     }
 
-    private RestErrorException(int httpStatus, Object title) {
+    public RestErrorException(int httpStatus, Object title) {
+        super(String.valueOf(title));
         this.statusCode = httpStatus;
         this.title = title == null ? "" : title.toString();
         this.timestamp = LocalDateTime.now();
     }
 
-    protected RestErrorException(int httpStatus, Object title, String path) {
+    public RestErrorException(int httpStatus, Object title, String path) {
         this(httpStatus, title);
         this.path = path;
     }
 
-    protected RestErrorException(int httpStatus, Object title, HttpServletRequest request) {
+    public RestErrorException(int httpStatus, Object title, HttpServletRequest request) {
         this(httpStatus, title);
         this.path = request == null ? null : request.getRequestURI();
-
     }
 
-    protected RestErrorException(HttpStatus httpStatus, Object title, String path) {
+    public RestErrorException(HttpStatus httpStatus, Object title, String path) {
         this(httpStatus.value(), title, path);
     }
 
-    protected RestErrorException(HttpStatus httpStatus, Object title, HttpServletRequest request) {
+    public RestErrorException(HttpStatus httpStatus, Object title, HttpServletRequest request) {
         this(httpStatus.value(), title, request);
     }
 
-    protected RestErrorException(int httpStatus, Object title, Object detail, String path) {
+    public RestErrorException(int httpStatus, Object title, Object detail, String path) {
         this(httpStatus, title, path);
         this.detail = validateDetail(detail);
     }
 
-    protected RestErrorException(int httpStatus, Object title, Object detail, HttpServletRequest request) {
+    public RestErrorException(int httpStatus, Object title, Object detail, HttpServletRequest request) {
         this(httpStatus, title, request);
         this.detail = validateDetail(detail);
     }
 
-    protected RestErrorException(HttpStatus httpStatus, Object title, Object detail, String path) {
+    public RestErrorException(HttpStatus httpStatus, Object title, Object detail, String path) {
         this(httpStatus, title, path);
         this.detail = validateDetail(detail);
     }
 
-    protected RestErrorException(HttpStatus httpStatus, Object title, Object detail, HttpServletRequest request) {
+    public RestErrorException(HttpStatus httpStatus, Object title, Object detail, HttpServletRequest request) {
         this(httpStatus, title, request);
         this.detail = validateDetail(detail);
     }
@@ -123,4 +126,22 @@ public abstract class RestErrorException extends RuntimeException {
         return "";
     }
 
+    @Override
+    public String toString() {
+        var list = Arrays.asList(super.getStackTrace());
+
+        return "RestErrorException {"
+                + "\n  \"status\": \"" + status + "\", "
+                + "\n  \"statusCode\": " + statusCode + ", "
+                + "\n  \"type\": \"" + type + "\", "
+                + "\n  \"title\": \"" + title + "\", "
+                + "\n  \"detail\": \"" + detail + "\", "
+                + "\n  \"path\": \"" + path + "\", "
+                + "\n  \"timestamp\": \"" + timestamp + "\", "
+                + "\n  \"message\": \"" + super.getMessage() + "\", "
+                + "\n  \"localizedMessage\": \"" + super.getLocalizedMessage() + "\", "
+                + "\n  \"cause\": \"" + super.getCause() + "\", "
+                + "\n  \"stackTrace\": \"" + list + "\" "
+                +"\n}";
+    }
 }

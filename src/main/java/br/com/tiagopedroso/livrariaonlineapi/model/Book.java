@@ -12,21 +12,21 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Livro {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String titulo;
+    private String title;
 
-    private LocalDate dataLancamento;
+    private LocalDate releaseDate;
 
-    private Integer quantidadePaginas;
+    private Integer numberOfPages;
 
-    //Relacionamentos
+    //Relationship: side N
     @ManyToOne
-    @JoinColumn(name = "idAutor")
-    private Autor autor;
+    @JoinColumn(name = "authorId")
+    private Author author;
 
 }

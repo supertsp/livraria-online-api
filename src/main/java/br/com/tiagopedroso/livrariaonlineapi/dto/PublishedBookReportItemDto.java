@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemRelatorioLivroPublicadoPorAutorDto {
+public class PublishedBookReportItemDto {
 
-    private Long idAutor;
-    private String nomeAutor;
-    private Long quantidadeLivros;
-    private Double percentual;
+    private Long authorId;
+    private String authorName;
+    private Long numberOfBooks;
+    private Double percentage;
 
 }

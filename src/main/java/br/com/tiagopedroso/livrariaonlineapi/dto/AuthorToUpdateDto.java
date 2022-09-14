@@ -16,18 +16,18 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AutorAtualizarDto {
+public class AuthorToUpdateDto {
 
-    private String nome;
+    private String name;
 
     @Size(max = 255)
     @Pattern(regexp = "^([a-zA-Z0-9_\\.\\-])+\\@([a-zA-Z0-9_\\.\\-])+\\.(gov|org|edu|com|mil|net|br)")
     private String email;
 
     @PastOrPresent
-    private LocalDate dataNascimento;
+    private LocalDate birthDate;
 
     @Size(max = 255)
-    private String miniCurriculo;
+    private String miniResume;
 
 }

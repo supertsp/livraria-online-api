@@ -13,22 +13,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Autor {
+public class Author {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String nome;
+	private String name;
 
 	private String email;
 
-	private LocalDate dataNascimento;
+	private LocalDate birthDate;
 
-	private String miniCurriculo;
+	private String miniResume;
 
-	//Relacionamentos
-	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
-	private List<Livro> livros;
+	//Relationship: side 1
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	private List<Book> publishedBooks;
 
 }
