@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql_bookstore
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: bookstore
+      MYSQL_USER: books
+      MYSQL_PASSWORD: books123
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/db:/var/lib/mysql
