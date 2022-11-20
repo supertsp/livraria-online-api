@@ -11,16 +11,21 @@ Microsserviço Rest para gerenciamento básico de uma Livraria.
 Tecnlogias utilizadas:
 
 **Módulo 02: APIs REST e Spring Boot**
-Spring Boot, ModelMapper, Bean Validation. 
+    
+    Spring Boot, ModelMapper, Bean Validation. 
 
 **Módulo 03: Controle de versão e persistência com JPA**
-Spring Data JPA, Flyway, MySQL.
+
+    Spring Data JPA, Flyway, MySQL.
 
 **Módulo 04: Tratamento de erros, testes automatizados e documentação da API**
-Swagger, JUnity, AssertJ, Mockito.
+
+    Swagger, JUnity, AssertJ, Mockito.
 
 **Módulo 05: Segurança na API**
-Spring Security, JJWT
+
+    Spring Security, JJWT
 
 **Módulo 06: Docker, deploy e CI/CD**
-Github Actions, Heroku, Docker
+    
+    Github Actions, Heroku, Docker
