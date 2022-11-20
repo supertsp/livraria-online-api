@@ -29,3 +29,11 @@ spring:
 #  error:
 #    whitelabel:
 #      enabled: false
+
+
+# Security
+security:
+  config:
+    prefix: Bearer
+    key: SECRET_KEY
+    expiration: 3600000
