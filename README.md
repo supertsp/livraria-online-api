@@ -1,11 +1,11 @@
 # livraria-online-api
+Microsserviço Rest para gerenciamento básico de uma Livraria.
 
 Projeto do Alura Bootcamp Java 2021 - Módulo 2 a 6
+
 Link: https://bootcamps.alura.com.br/bootcamp-java
+
 Link certificado: https://bootcamps.alura.com.br/bootcamp/15401/certificate
-
-
-Microsserviço Rest para gerenciamento básico de uma Livraria.
 
 
 Tecnlogias utilizadas:
