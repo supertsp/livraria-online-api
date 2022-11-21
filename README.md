@@ -8,7 +8,7 @@ Link: https://bootcamps.alura.com.br/bootcamp-java
 Link certificado: https://bootcamps.alura.com.br/bootcamp/15401/certificate
 
 
-Tecnlogias utilizadas:
+### Tecnlogias utilizadas:
 
 **Módulo 02: APIs REST e Spring Boot**
     
